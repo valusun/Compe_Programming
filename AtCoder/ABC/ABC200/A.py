@@ -1,5 +1,7 @@
-N = int(input())+100
-if N%100==0:
-    print(N//100-1)
-else:
-    print(N//100)
+def main():
+    N = int(input())
+    print(N // 100 if N % 100 == 0 else N // 100 + 1)
+
+
+if __name__ == "__main__":
+    main()
