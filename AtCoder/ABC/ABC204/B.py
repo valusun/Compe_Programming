@@ -1,7 +1,11 @@
-N = int(input())
-A = list(map(int,input().split()))
+def main():
+    _ = int(input())
+    A = list(map(int, input().split()))
+    ans = 0
+    for i in A:
+        ans += max(0, i - 10)
+    print(ans)
 
-ans = 0
-for i in range(N):
-    ans += max(0, A[i]-10)
-print(ans)
+
+if __name__ == "__main__":
+    main()

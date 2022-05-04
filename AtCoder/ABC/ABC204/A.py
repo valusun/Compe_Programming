@@ -1,6 +1,10 @@
-x,y = map(int,input().split())
+def main():
+    x, y = map(int, input().split())
+    if x == y:
+        print(x)
+    else:
+        print(3 - x - y)
 
-if x==y:
-    print(x)
-else:
-    print(3-x-y)
+
+if __name__ == "__main__":
+    main()

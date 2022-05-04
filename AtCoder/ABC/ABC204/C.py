@@ -1,22 +1,28 @@
 import sys
+
 sys.setrecursionlimit(10**9)
 
-N,M = map(int,input().split())
-Graph = [[] for _ in range(N)]
-for i in range(M):
-    a,b = map(int,input().split())
-    Graph[a-1].append(b-1)
 
-def dfs(v):
-    visited[v] = True
-    for i in Graph[v]:
-        if visited[i] == False:
-            dfs(i)
+def main():
+    N, M = map(int, input().split())
+    goings_towns = [[] for _ in range(N)]
+    for _ in range(M):
+        a, b = map(int, input().split())
+        goings_towns[a - 1].append(b - 1)
+    ans = 0
 
-ans = 0
-for i in range(N):
-    visited = [False]*N
-    dfs(i)
-    ans += sum(visited)
+    def dfs(v):
+        if not visited[v]:
+            visited[v] = True
+            for u in goings_towns[v]:
+                dfs(u)
 
-print(ans)
+    for start in range(N):
+        visited = [False] * N
+        dfs(start)
+        ans += sum(visited)
+    print(ans)
+
+
+if __name__ == "__main__":
+    main()
