@@ -1,17 +1,18 @@
 from bisect import bisect_left
 
-N,Q = map(int,input().split())
-A = list(map(int,input().split()))
 
-# A[i]までで使える整数の個数
-B = []
-for i in range(N):
-    B.append(A[i]-(i+1))
+def main():
+    N, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    using_number_counts = [A[i] - (i + 1) for i in range(N)]
+    for _ in range(Q):
+        k = int(input())
+        idx = bisect_left(using_number_counts, k)
+        if idx == N:
+            print((A[N - 1]) + (k - using_number_counts[N - 1]))
+        else:
+            print((A[idx] - 1) - (using_number_counts[idx] - k))
 
-for i in range(Q):
-    k =int(input())
-    x = bisect_left(B, k)
-    if x==N:
-        print(A[N-1]+(k-B[N-1]))
-    else:
-        print((A[x]-1)-(B[x]-k))
+
+if __name__ == "__main__":
+    main()

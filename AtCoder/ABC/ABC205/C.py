@@ -1,29 +1,19 @@
-A,B,C = map(int,input().split())
-if A==B:
-    print('=')
-else:
-    if A>=0 and B>=0:
-        if A>B:
-            print('>')
-        else:
-            print('<')
-    elif A<0:
-        if C%2==0:
-            if abs(A)==B:
-                print('=')
-            elif abs(A)>B:
-                print('>')
-            else:
-                print("<")
-        else:
-            print('<')
+def Check(a, b):
+    if a == b:
+        return "="
+    elif a > b:
+        return ">"
     else:
-        if C%2==0:
-            if A==abs(B):
-                print('=')
-            elif A>abs(B):
-                print('>')
-            else:
-                print("<")
-        else:
-            print(">")
+        return "<"
+
+
+def main():
+    A, B, C = map(int, input().split())
+    if C % 2 or (A < 0 and B < 0 or A > 0 and B > 0):
+        print(Check(A, B))
+    else:
+        print(Check(abs(A), abs(B)))
+
+
+if __name__ == "__main__":
+    main()
