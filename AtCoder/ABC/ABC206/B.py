@@ -1,8 +1,12 @@
-N = int(input())
+def main():
+    N = int(input())
+    now_money = 0
+    now_day = 0
+    while now_money < N:
+        now_day += 1
+        now_money += now_day
+    print(now_day)
 
-chokinbako = 0
-for i in range(1, 10**9):
-    chokinbako += i
-    if chokinbako >= N:
-        print(i)
-        exit()
+
+if __name__ == "__main__":
+    main()
