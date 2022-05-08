@@ -1,14 +1,16 @@
-from bisect import bisect_right
+def main():
+    P = int(input())
+    factorial = [1]
+    for i in range(2, 11):
+        factorial.append(factorial[-1] * i)
+    ans = 0
+    for f in factorial[::-1]:
+        if f > P:
+            continue
+        ans += P // f
+        P -= f * (P // f)
+    print(ans)
 
-P = int(input())
 
-Num = [1]
-for i in range(2, 11):
-    Num.append(Num[-1]*i)
-
-Ans = 0
-while P:
-    x = bisect_right(Num, P)-1
-    Ans += P//Num[x]
-    P -= Num[x]*(P//Num[x])
-print(Ans)
+if __name__ == "__main__":
+    main()

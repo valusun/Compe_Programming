@@ -1,16 +1,19 @@
-N,K = map(int,input().split())
-A = list(map(int,input().split()))
-B = sorted(A)
-
-Base = K//N
-K%=N
-if K==0:
-    Bias=0
-else:
-    Bias=B[K-1]
-
-for i in range(N):
-    if A[i]<=Bias:
-        print(Base+1)
+def main():
+    N, K = map(int, input().split())
+    A = list(map(int, input().split()))
+    base = K // N
+    K %= N
+    if not K:
+        for _ in range(N):
+            print(base)
     else:
-        print(Base)
+        give_point = sorted(A)[K - 1]
+        for a in A:
+            if a <= give_point:
+                print(base + 1)
+            else:
+                print(base)
+
+
+if __name__ == "__main__":
+    main()
