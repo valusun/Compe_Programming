@@ -1,9 +1,13 @@
-N = int(input())
-A = sorted(list(map(int,input().split())))
+def main():
+    _ = int(input())
+    C = sorted(list(map(int, input().split())))
+    ans = 1
+    MOD = 10**9 + 7
+    for i, v in enumerate(C):
+        ans *= v - i
+        ans %= MOD
+    print(ans)
 
-Ans = A[0]
-MOD = 10**9+7
-for i in range(1, N):
-    Ans *= (A[i]-i)
-    Ans%=MOD
-print(Ans)
+
+if __name__ == "__main__":
+    main()

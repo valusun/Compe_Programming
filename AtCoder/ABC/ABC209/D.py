@@ -1,26 +1,32 @@
-from collections import deque
+import sys
 
-N,Q = map(int,input().split())
-Graph = [[] for _ in range(N)]
-for i in range(N-1):
-    a,b = map(int,input().split())
-    Graph[a-1].append(b-1)
-    Graph[b-1].append(a-1)
+sys.setrecursionlimit(10**9)
 
-Queue = deque()
-Queue.append((0,1))
-Color = [-1]*N
-Color[0] = 0
-while Queue:
-    v,col = Queue.popleft()
-    for i in Graph[v]:
-        if Color[i]==-1:
-            Color[i]=col
-            Queue.append((i,(col+1)%2))
 
-for i in range(Q):
-    x,y = map(int,input().split())
-    if Color[x-1] == Color[y-1]:
-        print("Town")
-    else:
-        print("Road")
+def main():
+    N, Q = map(int, input().split())
+    Graph = [[] for _ in range(N)]
+    for _ in range(N - 1):
+        a, b = map(int, input().split())
+        Graph[a - 1].append(b - 1)
+        Graph[b - 1].append(a - 1)
+
+    dist = [10**9] * N
+
+    def dfs(v, d):
+        dist[v] = d
+        for u in Graph[v]:
+            if d + 1 < dist[u]:
+                dfs(u, d + 1)
+
+    dfs(0, 0)
+    for _ in range(Q):
+        c, d = map(int, input().split())
+        if (dist[c - 1] - dist[d - 1]) % 2:
+            print("Road")
+        else:
+            print("Town")
+
+
+if __name__ == "__main__":
+    main()
