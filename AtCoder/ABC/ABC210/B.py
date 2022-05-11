@@ -1,10 +1,8 @@
-N = int(input())
-A = input()
+def main():
+    _ = int(input())
+    target = list(input()).index("1")
+    print("Aoki" if target % 2 else "Takahashi")
 
-for i in range(N):
-    if A[i]=='1':
-        if i%2==0:
-            print("Takahashi")
-        else:
-            print("Aoki")
-        break
+
+if __name__ == "__main__":
+    main()
