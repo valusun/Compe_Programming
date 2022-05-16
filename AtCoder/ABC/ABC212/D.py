@@ -1,15 +1,20 @@
 import heapq
 
-Q = int(input())
-A = []
-heapq.heapify(A)
 
-diff = 0
-for i in range(Q):
-    query = list(map(int,input().split()))
-    if query[0] == 1:
-        heapq.heappush(A, query[1]-diff)
-    elif query[0] == 2:
-        diff += query[1]
-    else:
-        print(heapq.heappop(A)+diff)
+def main():
+    Q = int(input())
+    bag = []
+    heapq.heapify(bag)
+    offset = 0
+    for _ in range(Q):
+        query = list(map(int, input().split()))
+        if query[0] == 1:
+            heapq.heappush(bag, query[1] - offset)
+        elif query[0] == 2:
+            offset += query[1]
+        else:
+            print(heapq.heappop(bag) + offset)
+
+
+if __name__ == "__main__":
+    main()

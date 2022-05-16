@@ -1,13 +1,15 @@
-X = list(input())
-S_set = set(X)
+def main():
+    X = list(input())
+    if len(set(X)) == 1:
+        print("Weak")
+        return
+    for i in range(3):
+        if (int(X[i]) + 1) % 10 != int(X[i + 1]):
+            print("Strong")
+            break
+    else:
+        print("Weak")
 
-if len(S_set) == 1:
-    print("Weak")
-    exit()
 
-for i in range(3):
-    if not ((int(X[i])+1 == int(X[i+1])) or (X[i]=='9' and X[i+1]=='0')):
-        print("Strong")
-        break
-else:
-    print("Weak")
+if __name__ == "__main__":
+    main()
