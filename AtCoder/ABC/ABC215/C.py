@@ -1,8 +1,11 @@
 from itertools import permutations
 
-S,K = input().split()
-S = list(S)
-K = int(K)
-S_per = set("".join(i) for i in permutations(S))
-S_per = list(sorted(S_per))
-print(S_per[K-1])
+
+def main():
+    S, K = input().split()
+    p = sorted(list(set(permutations(S))))
+    print("".join(p[int(K) - 1]))
+
+
+if __name__ == "__main__":
+    main()

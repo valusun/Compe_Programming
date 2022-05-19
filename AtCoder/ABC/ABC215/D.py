@@ -1,29 +1,42 @@
 from math import sqrt
 
-N,M = map(int,input().split())
-A = list(map(int,input().split()))
 
-# 素因数
-S = set()
-for i in range(N):
-    for j in range(2, int(sqrt(A[i]))+1):
-        while A[i]%j==0:
-            S.add(j)
-            A[i]//=j
-    if A[i]!=1:
-        S.add(A[i])
+def PrimeFactorSplit(num):
+    """受け取った引数の素因数を返す
 
-# 削る
-Number = [0]*(M+1)
-for i in S:
-    j = i
-    while j<=M:
-        Number[j] = 1
-        j+=i
+    Args:
+        num (int): 数値
 
-Ans = []
-for i in range(1, M+1):
-    if Number[i] == 0:
-        Ans.append(i)
+    Returns:
+        list[int]: 引数の素因数
+    """
 
-print(len(Ans), *Ans, sep="\n")
+    prime_factors = []
+    for i in range(2, int(sqrt(num)) + 1):
+        while num % i == 0:
+            prime_factors.append(i)
+            num //= i
+    if num != 1:
+        prime_factors.append(num)
+    return prime_factors
+
+
+def main():
+    N, M = map(int, input().split())
+    A = list(map(int, input().split()))
+
+    prime_factors = set()
+    for i in A:
+        prime_factors |= set(PrimeFactorSplit(i))
+
+    not_used = set()
+    for p in prime_factors:
+        for q in range(p, M + 1, p):
+            not_used.add(q)
+
+    ans = set(list(i for i in range(1, M + 1))) - not_used
+    print(len(ans), *sorted(ans), sep="\n")
+
+
+if __name__ == "__main__":
+    main()
