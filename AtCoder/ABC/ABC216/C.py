@@ -1,12 +1,15 @@
-N = int(input())
+def main():
+    N = int(input())
+    ans = ""
+    while N:
+        if N % 2:
+            N -= 1
+            ans += "A"
+        else:
+            N //= 2
+            ans += "B"
+    print(ans[::-1])
 
-Ans = ""
-while N:
-    if N%2==0:
-        N//=2
-        Ans+="B"
-    else:
-        N-=1
-        Ans+="A"
 
-print(Ans[::-1])
+if __name__ == "__main__":
+    main()
