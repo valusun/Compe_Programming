@@ -1,19 +1,24 @@
 import heapq
 from collections import deque
 
-Query = int(input())
-Queue = deque()
-sort_end = []
 
-for i in range(Query):
-    t,*x = map(int,input().split())
-    if t==1:
-        Queue.append(x[0])
-    elif t==2:
-        if len(sort_end):
-            print(heapq.heappop(sort_end))
+def main():
+    Q = int(input())
+    A = deque()
+    sorted_A = []
+    for _ in range(Q):
+        c, *x = map(int, input().split())
+        if c == 1:
+            A.append(x[0])
+        elif c == 2:
+            if len(sorted_A):
+                print(heapq.heappop(sorted_A))
+            else:
+                print(A.popleft())
         else:
-            print(Queue.popleft())
-    else:
-        while len(Queue):
-            heapq.heappush(sort_end, Queue.popleft())
+            while len(A):
+                heapq.heappush(sorted_A, A.popleft())
+
+
+if __name__ == "__main__":
+    main()

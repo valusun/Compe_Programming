@@ -1,5 +1,4 @@
 class AVLTree:
-
     class Node:
         # key : ノードのキー
         # val : ノードの値
@@ -15,7 +14,6 @@ class AVLTree:
             self.rch = None
             self.bias = 0
             self.size = 1
-
 
     def __init__(self):
         self.root = None
@@ -310,7 +308,7 @@ class AVLTree:
             any: 条件を満たすようなキー。そのようなキーが一つも存在しないならNone。
 
         """
-        #ret = float('inf')
+        # ret = float('inf')
         ret = None
         v = self.root
         while v is not None:
@@ -334,7 +332,7 @@ class AVLTree:
             any: 条件を満たすようなキー。そのようなキーが一つも存在しないならNone。
 
         """
-        #ret = -float('inf')
+        # ret = -float('inf')
         ret = None
         v = self.root
         while v is not None:
@@ -355,26 +353,30 @@ class AVLTree:
         v = self.root
         s = 0
         while v is not None:
-            t = s+v.lch.size if v.lch is not None else s
+            t = s + v.lch.size if v.lch is not None else s
             if t == k:
                 return v.key
             elif t < k:
-                s = t+1
+                s = t + 1
                 v = v.rch
             else:
                 v = v.lch
         return None
 
 
-# ----- main ----- #
-L,Q = map(int,input().split())
-AVL = AVLTree()
-AVL.insert(0, 0)
-AVL.insert(L, L)
+def main():
+    L, Q = map(int, input().split())
+    AVL = AVLTree()
+    AVL.insert(0, 0)
+    AVL.insert(L, L)
 
-for i in range(Q):
-    c,x = map(int, input().split())
-    if c==1:
-        AVL.insert(x,x)
-    else:
-        print(AVL.lower_bound(x)-AVL.upper_bound(x))
+    for _ in range(Q):
+        c, x = map(int, input().split())
+        if c == 1:
+            AVL.insert(x, x)
+        else:
+            print(AVL.lower_bound(x) - AVL.upper_bound(x))
+
+
+if __name__ == "__main__":
+    main()
