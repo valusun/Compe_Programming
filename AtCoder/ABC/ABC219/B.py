@@ -1,15 +1,9 @@
-S1 = input()
-S2 = input()
-S3 = input()
-T = input()
+def main():
+    S = [input() for _ in range(3)]
+    T = input()
+    for t in T:
+        print(S[int(t) - 1], end="")
 
-Ans = ""
-for i in T:
-    if i == '1':
-        Ans+=S1
-    if i == '2':
-        Ans+=S2
-    if i == '3':
-        Ans+=S3
 
-print(Ans)
+if __name__ == "__main__":
+    main()
