@@ -1,6 +1,8 @@
-A,B,C = map(int,input().split())
-D = B//C*C
-if A<=D<=B:
-    print(D)
-else:
-    print(-1)
+def main():
+    A, B, C = map(int, input().split())
+    d = B // C * C
+    print(d if A <= d else -1)
+
+
+if __name__ == "__main__":
+    main()
