@@ -1,6 +1,10 @@
-X = int(input())
+def main():
+    X = int(input())
+    if X >= 100 and X % 100 == 0:
+        print("Yes")
+    else:
+        print("No")
 
-if X>=100 and X%100==0: 
-    print("Yes")
-else:
-    print("No")
+
+if __name__ == "__main__":
+    main()
