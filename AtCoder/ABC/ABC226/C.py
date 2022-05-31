@@ -1,24 +1,29 @@
-import sys
-sys.setrecursionlimit(10**9)
+from collections import deque
 
-N = int(input())
-T = [0]*N
-A = []
-for i in range(N):
-    t,k,*a = map(int,input().split())
-    T[i] = t
-    A.append(a)
 
-Ans = 0
-Check = [0]*N
-def dfs(n):
-    global Ans
-    Check[n] = 1
-    Ans += T[n]
-    for i in A[n]:
-        if Check[i-1]:
-            continue
-        dfs(i-1)
+def main():
+    N = int(input())
+    learning_times = []
+    need_arts = []
+    for _ in range(N):
+        t, _, *a = map(int, input().split())
+        learning_times.append(t)
+        need_arts.append(a)
+    learned_arts = [False] * N
+    learned_arts[N - 1] = True
+    time = 0
+    q = deque()
+    q.append((N - 1))
+    while q:
+        v = q.popleft()
+        time += learning_times[v]
+        for u in need_arts[v]:
+            if learned_arts[u - 1]:
+                continue
+            learned_arts[u - 1] = True
+            q.append((u - 1))
+    print(time)
 
-dfs(N-1)
-print(Ans)
+
+if __name__ == "__main__":
+    main()

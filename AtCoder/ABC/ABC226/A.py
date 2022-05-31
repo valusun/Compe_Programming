@@ -1,5 +1,7 @@
-A,B, = map(int, input().split('.'))
-if B >= 500:
-    print(A+1)
-else:
-    print(A)
+def main():
+    X, Y = map(int, input().split("."))
+    print(X + 1 if Y >= 500 else X)
+
+
+if __name__ == "__main__":
+    main()
