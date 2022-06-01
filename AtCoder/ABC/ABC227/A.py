@@ -1,5 +1,7 @@
-N,K,A = map(int,input().split())
+def main():
+    N, K, A = map(int, input().split())
+    print((K + A - 1) % N if (K + A - 1) % N else N)
 
-Ans = (A+K-1)%N
-if Ans==0: Ans=N
-print(Ans)
+
+if __name__ == "__main__":
+    main()

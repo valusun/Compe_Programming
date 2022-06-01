@@ -1,18 +1,17 @@
-N = int(input())
+def main():
+    N = int(input())
 
-if N==1:
-    print(1)
-    exit()
-
-Ans = 0
-for A in range(1, N):
-    if A**3 > N:
-        break
-    for B in range(A, N):
-        C = N//(A*B)
-        if C>=B:
-            Ans+=(C-B+1)
-        else:
+    ans = 0
+    for a in range(1, N + 1):
+        if a**3 > N:
             break
+        for b in range(a, N + 1):
+            c = N // (a * b)
+            if b > c:
+                break
+            ans += c - b + 1
+    print(ans)
 
-print(Ans)
+
+if __name__ == "__main__":
+    main()
