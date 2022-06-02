@@ -1,12 +1,14 @@
-N,X = map(int,input().split())
-A = list(map(int,input().split()))
+def main():
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
+    knowing = [False] * N
+    knowing_cnt = 0
+    while not knowing[X - 1]:
+        knowing[X - 1] = True
+        knowing_cnt += 1
+        X = A[X - 1]
+    print(knowing_cnt)
 
-Check = [0]*N
-Ans = 0
-while True:
-    if Check[X-1]:
-        print(Ans)
-        break
-    Check[X-1]=1
-    Ans+=1
-    X = A[X-1]
+
+if __name__ == "__main__":
+    main()
