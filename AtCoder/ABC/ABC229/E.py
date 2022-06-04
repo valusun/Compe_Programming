@@ -1,5 +1,4 @@
-# Union-Find
-class UnionFind():
+class UnionFind:
     def __init__(self, n):
         self.n = n
         self.parents = [-1] * n
@@ -47,25 +46,25 @@ class UnionFind():
     def group_count(self):
         return len(self.roots())
 
-if __name__ == '__main__':
 
-    N,M = map(int,input().split())
+def main():
+    N, M = map(int, input().split())
     Graph = [[] for _ in range(N)]
-    for i in range(M):
-        x,y = map(int,input().split())
-        Graph[x-1].append(y-1)
-
+    for _ in range(M):
+        v, u = map(int, input().split())
+        Graph[v - 1].append(u - 1)
+    ans = [0]
+    link_cnt = 0
     UF = UnionFind(N)
-    Ans = [0]
-
-    Link_cnt = 0
-    for v in range(N-1,0,-1):
-        Link_cnt += 1
+    for v in range(N - 1, 0, -1):
+        link_cnt += 1
         for u in Graph[v]:
             if not UF.same(v, u):
-                UF.union(v,u)
-                Link_cnt -= 1
+                UF.union(v, u)
+                link_cnt -= 1
+        ans.append(link_cnt)
+    print(*ans[::-1], sep="\n")
 
-        Ans.append(Link_cnt)
 
-    print(*Ans[::-1],sep="\n")
+if __name__ == "__main__":
+    main()

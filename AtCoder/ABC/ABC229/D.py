@@ -1,19 +1,21 @@
-S = input()
-K = int(input())
-len_S = len(S)
+def main():
+    S = input()
+    K = int(input())
+    cusum_S = [0]
+    for s in S:
+        if s == ".":
+            cusum_S.append(cusum_S[-1] + 1)
+        else:
+            cusum_S.append(cusum_S[-1])
+    ans = 0
+    len_S = len(S)
+    right = 0
+    for left in range(len_S):
+        while right < len_S and cusum_S[right + 1] - cusum_S[left] <= K:
+            right += 1
+        ans = max(ans, right - left)
+    print(ans)
 
-Cusum = [0]
-for i in range(len_S):
-    if S[i]=='.':
-        Cusum.append(Cusum[-1]+1)
-    else:
-        Cusum.append(Cusum[-1])
 
-Ans = 0
-r = 0
-for l in range(len_S):
-    while r<len_S and Cusum[r+1]-Cusum[l]<=K:
-        r+=1
-    Ans = max(Ans, r-l)
-
-print(Ans)
+if __name__ == "__main__":
+    main()
