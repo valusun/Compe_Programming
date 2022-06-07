@@ -1,11 +1,14 @@
 from math import sqrt
 
-N = int(input())
-sq = int(sqrt(N))+1
 
-Ans = 0
-for i in range(1, sq):
-    Ans += (N//i-i)*2
-    Ans+=1
+def main():
+    N = int(input())
+    ans = 0
+    for i in range(1, int(sqrt(N)) + 1):
+        ans += (N // i - i) * 2
+        ans += 1
+    print(ans)
 
-print(Ans)
+
+if __name__ == "__main__":
+    main()
