@@ -1,5 +1,5 @@
 # Union-Find
-class UnionFind():
+class UnionFind:
     def __init__(self, n):
         self.n = n
         self.parents = [-1] * n
@@ -25,6 +25,7 @@ class UnionFind():
 
         self.parents[x] += self.parents[y]
         self.parents[y] = x
+        return True
 
     # Returns x-tree number of elements in the tree
     def size(self, x):
@@ -47,23 +48,25 @@ class UnionFind():
     def group_count(self):
         return len(self.roots())
 
-N,M = map(int,input().split())
-UF = UnionFind(N)
 
-X = [0]*N
+def main():
+    N, M = map(int, input().split())
+    A = [list(map(int, input().split())) for _ in range(M)]
+    UF = UnionFind(N)
+    neighbors_cnt = [0] * N
+    for a, b in A:
+        if not UF.union(a - 1, b - 1):
+            print("No")
+            exit()
+        neighbors_cnt[a - 1] += 1
+        neighbors_cnt[b - 1] += 1
+    for n in neighbors_cnt:
+        if n > 2:
+            print("No")
+            break
+    else:
+        print("Yes")
 
-for i in range(M):
-    A,B = map(int,input().split())
-    check = UF.union(A-1, B-1)
-    if check == False:
-        print("No")
-        exit()
-    X[A-1]+=1
-    X[B-1]+=1
 
-for i in range(N):
-    if X[i] > 2:
-        print("No")
-        break
-else:
-    print("Yes")
+if __name__ == "__main__":
+    main()
