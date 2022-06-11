@@ -1,2 +1,6 @@
-a,b = map(int,input().split("x"))
-print(a*b)
+def main():
+    print(eval(input().replace("x", "*")))
+
+
+if __name__ == "__main__":
+    main()
