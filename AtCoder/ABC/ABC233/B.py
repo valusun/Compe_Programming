@@ -1,5 +1,8 @@
-L,R = map(int,input().split())
-S = input()
+def main():
+    L, R = map(int, input().split())
+    S = input()
+    print(f"{S[:L-1]}{S[L-1:R][::-1]}{S[R:]}")
 
-Ans = S[:L-1] + S[L-1:R][::-1] + S[R:]
-print(Ans)
+
+if __name__ == "__main__":
+    main()

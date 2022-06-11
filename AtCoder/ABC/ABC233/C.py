@@ -1,24 +1,23 @@
-N,X = map(int,input().split())
-A = []
-for i in range(N):
-    L,*a = map(int,input().split())
-    A.append(sorted(a))
+def main():
+    N, X = map(int, input().split())
+    A = []
+    for _ in range(N):
+        _, *a = map(int, input().split())
+        A.append(sorted(a))
 
-Ans = 0
-def dfs(cnt, res):
-    global Ans
+    def dfs(cnt, res):
+        if cnt == N:
+            if res == X:
+                return 1
+            return 0
+        ans = 0
+        for a in A[cnt]:
+            if res * a <= X:
+                ans += dfs(cnt + 1, res * a)
+        return ans
 
-    # N個の袋からボールを取り出したか
-    if cnt == N:
-        if res == X:
-            Ans+=1
-        return
+    print(dfs(0, 1))
 
-    # cnt個目の袋からボールを取り出す
-    for i in A[cnt]:
-        if res*i > X:
-            return
-        dfs(cnt+1, res*i)
 
-dfs(0, 1)
-print(Ans)
+if __name__ == "__main__":
+    main()

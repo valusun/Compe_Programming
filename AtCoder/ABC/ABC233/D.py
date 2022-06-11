@@ -1,18 +1,20 @@
-N,K = map(int,input().split())
-A = list(map(int,input().split()))
+from itertools import accumulate
+from typing import Counter
 
-# 累積和
-Cusum = [0]
-for i in range(N):
-    Cusum.append(Cusum[-1]+A[i])
 
-Ans = 0
-dic = dict()
-for i in range(N):
-    if Cusum[i] not in dic:
-        dic[Cusum[i]] = 0
-    dic[Cusum[i]]+=1
-    if Cusum[i+1]-K in dic:
-        Ans += dic[Cusum[i+1]-K]
+def main():
+    _, K = map(int, input().split())
+    A = list(map(int, input().split()))
+    cusum_A = list(accumulate(A))
+    element_counts = Counter()
+    element_counts[0] += 1
+    ans = 0
+    for x in cusum_A:
+        y = x - K
+        ans += element_counts[y]
+        element_counts[x] += 1
+    print(ans)
 
-print(Ans)
+
+if __name__ == "__main__":
+    main()
