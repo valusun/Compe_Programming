@@ -1,19 +1,26 @@
 from bisect import bisect_left
 
-# 等差数列の全列挙
-Number = []
-for i in range(1, 10):
-    for j in range(-9, 10):
-        tmp = ""
-        digit = i
-        for k in range(18):
-            tmp += str(digit)
-            Number.append(int(tmp))
-            digit += j
-            if digit < 0 or digit > 9:
-                break
 
-Number.sort()
+def GenerateArithmeticProgression():
+    sequence = []
+    for i in range(1, 10):
+        for j in range(-9, 10):
+            tmp = ""
+            ret = i
+            for _ in range(18):
+                tmp += str(ret)
+                sequence.append(int(tmp))
+                ret += j
+                if ret < 0 or ret > 9:
+                    break
+    return sequence
 
-N = int(input())
-print(Number[bisect_left(Number, N)])
+
+def main():
+    N = int(input())
+    sequence = sorted(GenerateArithmeticProgression())
+    print(sequence[bisect_left(sequence, N)])
+
+
+if __name__ == "__main__":
+    main()

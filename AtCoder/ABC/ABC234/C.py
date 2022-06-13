@@ -1,13 +1,14 @@
-def exchange(x):
-    ret = ""
-    while x:
-        tmp = x%2
-        if tmp == 1:
-            ret += "2"
+def main():
+    K = int(input())
+    ans = ""
+    while K:
+        if K % 2:
+            ans += "2"
         else:
-            ret += "0"
-        x//=2
-    return ret[::-1]
+            ans += "0"
+        K //= 2
+    print(ans[::-1])
 
-K = int(input())
-print(exchange(K))
+
+if __name__ == "__main__":
+    main()
