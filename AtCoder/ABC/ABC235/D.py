@@ -1,28 +1,26 @@
 from collections import deque
 
-a,N = map(int,input().split())
 
-Q = deque()
-Q.append((1, 0))
-
-Seen = set()
-Seen.add(1)
-
-while Q:
-    Num, d = Q.popleft()
-    if Num == N:
-        print(d)
-        break
-
-    if len(str(Num*a)) <= len(str(N)):
-        Q.append((Num*a, d+1))
-        Seen.add(Num*a)
-
-    if Num >= 10 and Num%10!=0:
-        new_Num = int(str(Num)[-1] + str(Num)[:-1])
-        if new_Num not in Seen:
-            Q.append((new_Num, d+1))
-            Seen.add(new_Num)
-
-else:
+def main():
+    a, N = map(int, input().split())
+    seem_numbers = set([1])
+    que = deque()
+    que.append((1, 0))
+    while que:
+        now, cnt = que.popleft()
+        if now == N:
+            print(cnt)
+            exit()
+        if now >= 10 and now % 10 != 0:
+            next_number = int(str(now)[-1] + str(now)[:-1])
+            if next_number not in seem_numbers:
+                seem_numbers.add(next_number)
+                que.append((next_number, cnt + 1))
+        if len(str(now * a)) <= len(str(N)) and (now * a) not in seem_numbers:
+            seem_numbers.add(now * a)
+            que.append((now * a, cnt + 1))
     print(-1)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,9 +1,13 @@
-N = int(input())
-H = list(map(int,input().split()))
+def main():
+    _ = int(input())
+    H = list(map(int, input().split()))
+    ans = 0
+    for h in H:
+        if ans >= h:
+            break
+        ans = h
+    print(ans)
 
-for i in range(N-1):
-    if H[i] >= H[i+1]:
-        print(H[i])
-        break
-else:
-    print(H[-1])
+
+if __name__ == "__main__":
+    main()

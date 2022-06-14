@@ -1,4 +1,7 @@
-a,b,c = input()
-a,b,c = int(a), int(b), int(c)
+def main():
+    a, b, c = map(int, input())
+    print((a + b + c) * 111)
 
-print((a+b+c)*111)
+
+if __name__ == "__main__":
+    main()

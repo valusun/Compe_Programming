@@ -1,15 +1,19 @@
-N,Q = map(int,input().split())
-A = list(map(int,input().split()))
+from collections import defaultdict
 
-dic = dict()
-for i in range(N):
-    if A[i] not in dic:
-        dic[A[i]] = []
-    dic[A[i]].append(i+1)
 
-for i in range(Q):
-    x,k = map(int,input().split())
-    if x not in dic or len(dic[x]) < k:
-        print(-1)
-    else:
-        print(dic[x][k-1])
+def main():
+    _, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    dic = defaultdict(list)
+    for i, a in enumerate(A):
+        dic[a].append(i + 1)
+    for _ in range(Q):
+        x, k = map(int, input().split())
+        if x in dic and len(dic[x]) >= k:
+            print(dic[x][k - 1])
+        else:
+            print(-1)
+
+
+if __name__ == "__main__":
+    main()
