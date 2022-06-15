@@ -1,10 +1,14 @@
-N = int(input())
-A = list(map(int,input().split()))
+from collections import Counter
 
-A.sort()
-for i in range(3, 4*N-1, 4):
-    if A[i] != i//4+1:
-        print(i//4+1)
-        break
-else:
-    print(N)
+
+def main():
+    _ = int(input())
+    A = list(map(int, input().split()))
+    C = Counter()
+    for a in A:
+        C[a] += 1
+    print(C.most_common()[-1][0])
+
+
+if __name__ == "__main__":
+    main()
