@@ -1,24 +1,28 @@
-S = input()
-N = len(S)
+import re
 
-# 先頭のaの数
-i = 0
-while i<N and S[i]=='a':
-    i+=1
-First = i
 
-# 末尾のaの数
-i = 0
-while i<N and S[-i-1]=='a':
-    i+=1
-End = i
+def GetPrefixCount(s):
+    """先頭のaの個数を返す
 
-S = 'a'*(max(0, End-First)) + S
-N = len(S)
+    Args:
+        s (str): 文字列
+    """
 
-for i in range(N//2):
-    if S[i] != S[-i-1]:
-        print("No")
-        break
-else:
-    print("Yes")
+    return re.match("a*", s).end()
+
+
+def main():
+    S = input()
+    first = GetPrefixCount(S)
+    last = GetPrefixCount(S[::-1])
+    S = "a" * max(0, last - first) + S
+    for i in range(len(S) // 2):
+        if S[i] != S[-1 - i]:
+            print("No")
+            break
+    else:
+        print("Yes")
+
+
+if __name__ == "__main__":
+    main()
