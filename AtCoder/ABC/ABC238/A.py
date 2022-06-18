@@ -1,6 +1,6 @@
-N = int(input())
+def main():
+    print("No" if 2 <= int(input()) <= 4 else "Yes")
 
-if 2<=N<=4:
-    print("No")
-else:
-    print("Yes")
+
+if __name__ == "__main__":
+    main()

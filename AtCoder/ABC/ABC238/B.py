@@ -1,17 +1,17 @@
-N = int(input())
-B = list(map(int,input().split()))
+def main():
+    _ = int(input())
+    A = list(map(int, input().split()))
+    cutting_point = [0, 360]
+    now_point = 0
+    for a in A:
+        now_point = (now_point + a) % 360
+        cutting_point.append(now_point)
+    cutting_point.sort()
+    ans = 0
+    for i, v in enumerate(cutting_point[1:]):
+        ans = max(ans, v - cutting_point[i])
+    print(ans)
 
-cut = [0]
-for i in range(N):
-    if cut[-1]+B[i] < 360:
-        cut.append(cut[-1]+B[i])
-    else:
-        cut.append((cut[-1]+B[i])%360)
 
-cut.sort()
-cut.append(360)
-Ans = 0
-for i in range(N+1):
-    Ans = max(Ans, cut[i+1]-cut[i])
-
-print(Ans)
+if __name__ == "__main__":
+    main()
