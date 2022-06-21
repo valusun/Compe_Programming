@@ -1,2 +1,6 @@
-X = int(input())
-print(X//10)
+def main():
+    print(int(input()) // 10)
+
+
+if __name__ == "__main__":
+    main()
