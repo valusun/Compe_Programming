@@ -1,4 +1,7 @@
-N = int(input())
-A = set(list(map(int,input().split())))
+def main():
+    _ = int(input())
+    print(len(set(list(map(int, input().split())))))
 
-print(len(A))
+
+if __name__ == "__main__":
+    main()

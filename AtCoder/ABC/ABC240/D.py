@@ -1,18 +1,20 @@
-N = int(input())
-A = list(map(int,input().split()))
-
-stack = [[-1, -1]]
-ball = 0
-for i in range(N):
-    if stack[-1][0]!=A[i]:
-        stack.append([A[i], 1])
-        ball+=1
-    else:
-        if stack[-1][1]+1 == A[i]:
-            ball-=(A[i]-1)
-            stack.pop()
+def main():
+    _ = int(input())
+    A = list(map(int, input().split()))
+    cylinder = [[-1, 0]]
+    ans = 0
+    for a in A:
+        if cylinder[-1][0] == a:
+            cylinder[-1][1] += 1
+            ans += 1
+            if cylinder[-1][1] == a:
+                cylinder.pop()
+                ans -= a
         else:
-            stack[-1][1]+=1
-            ball+=1
-    print(ball)
-    
+            cylinder.append([a, 1])
+            ans += 1
+        print(ans)
+
+
+if __name__ == "__main__":
+    main()
