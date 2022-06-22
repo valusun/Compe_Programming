@@ -1,6 +1,7 @@
-A = list(map(int,input().split()))
+def main():
+    a = list(map(int, input().split()))
+    print(a[a[a[0]]])
 
-ans = 0
-for i in range(2):
-    ans = A[ans]
-print(A[ans])
+
+if __name__ == "__main__":
+    main()
