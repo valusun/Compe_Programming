@@ -1,24 +1,22 @@
-N,X = map(int,input().split())
-S = input()
-
-stack = []
-for i in range(N):
-    if len(stack):
-        if stack[-1] == 'U':
-            stack.append(S[i])
+def main():
+    _, X = map(int, input().split())
+    S = input()
+    stack = []
+    for s in S:
+        if stack and s == "U" and stack[-1] != "U":
+            stack.pop()
         else:
-            if S[i] == 'U':
-                stack.pop()
-            else:
-                stack.append(S[i])
-    else:
-        stack.append(S[i])
+            stack.append(s)
 
-for s in stack:
-    if s=='U':
-        X//=2
-    elif s=='L':
-        X*=2
-    else:
-        X = X*2+1
-print(X)
+    for s in stack:
+        if s == "U":
+            X //= 2
+        elif s == "L":
+            X *= 2
+        else:
+            X = (X * 2) + 1
+    print(X)
+
+
+if __name__ == "__main__":
+    main()

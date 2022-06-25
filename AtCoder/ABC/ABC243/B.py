@@ -1,13 +1,17 @@
-N = int(input())
-A = list(map(int,input().split()))
-B = list(map(int,input().split()))
+def main():
+    _ = int(input())
+    A = list(map(int, input().split()))
+    B = list(map(int, input().split()))
+    same_position = 0
+    diff_position = 0
+    for i, a in enumerate(A):
+        if a in B:
+            if a == B[i]:
+                same_position += 1
+            else:
+                diff_position += 1
+    print(same_position, diff_position, sep="\n")
 
-x,y = 0,0
-for i in range(N):
-    if A[i] in set(B):
-        if A[i] == B[i]:
-            x+=1
-        else:
-            y+=1
 
-print(x,y)
+if __name__ == "__main__":
+    main()

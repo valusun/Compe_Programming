@@ -1,24 +1,32 @@
-N = int(input())
-xy = [list(map(int,input().split())) for _ in range(N)]
-S = input()
+from collections import defaultdict
 
-L,R = dict(),dict()
-R_set = set()
-for i in range(N):
-    if S[i]=='L':
-        if xy[i][1] not in L:
-            L[xy[i][1]] = -1
-        L[xy[i][1]] = max(L[xy[i][1]], xy[i][0])
-    else:
-        if xy[i][1] not in R:
-            R[xy[i][1]] = 10**10
-        R[xy[i][1]] = min(R[xy[i][1]], xy[i][0])
-        R_set.add(xy[i][1])
 
-for x,y in L.items():
-    if x in R_set:
-        if y >= R[x]:
+def main():
+    N = int(input())
+    XY = [list(map(int, input().split())) for _ in range(N)]
+    S = input()
+    L, R = defaultdict(int), defaultdict(int)
+    for i in range(N):
+        if S[i] == "L":
+            if XY[i][1] in L:
+                L[XY[i][1]] = max(L[XY[i][1]], XY[i][0])
+            else:
+                L[XY[i][1]] = XY[i][0]
+        else:
+            if XY[i][1] in R:
+                R[XY[i][1]] = min(R[XY[i][1]], XY[i][0])
+            else:
+                R[XY[i][1]] = XY[i][0]
+
+    for k, v in L.items():
+        if k not in R:
+            continue
+        if R[k] <= v:
             print("Yes")
             break
-else:
-    print("No")
+    else:
+        print("No")
+
+
+if __name__ == "__main__":
+    main()
