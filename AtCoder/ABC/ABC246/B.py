@@ -1,5 +1,11 @@
 from math import sqrt
 
-a, b = map(int, input().split())
-c = sqrt(a**2 + b**2)
-print(a / c, b / c)
+
+def main():
+    A, B = map(int, input().split())
+    d = sqrt(A**2 + B**2)
+    print(A / d, B / d)
+
+
+if __name__ == "__main__":
+    main()

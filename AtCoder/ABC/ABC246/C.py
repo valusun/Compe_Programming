@@ -1,14 +1,19 @@
-N, K, X = map(int, input().split())
-A = sorted(list(map(int, input().split())))
+def main():
+    N, K, X = map(int, input().split())
+    A = list(map(int, input().split()))
 
-for i in range(N):
-    if A[i] // X <= K:
-        K -= A[i] // X
-        A[i] %= X
-    else:
-        A[i] -= K * X
-        K = 0
-        break
+    for i, a in enumerate(A):
+        if a // X > K:
+            A[i] -= X * K
+            K = 0
+            break
+        else:
+            A[i] %= X
+            K -= a // X
 
-A.sort(reverse=True)
-print(sum(A[K:]))
+    A.sort(reverse=True)
+    print(sum(A[K:]))
+
+
+if __name__ == "__main__":
+    main()
