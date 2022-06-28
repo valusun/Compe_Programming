@@ -1,4 +1,4 @@
-def SieveEratosthenes(n: int):
+def GeneratePrimeNumbers(n: int):
     """インデックス番号が素数の箇所を1としたリストを生成する
 
     Args:
@@ -22,7 +22,7 @@ def SieveEratosthenes(n: int):
 def main():
     N = int(input())
     ans = 0
-    primes = SieveEratosthenes(10**6)
+    primes = GeneratePrimeNumbers(10**6)
     for q in range(2, 10**6 + 1):
         if not primes[q]:
             continue
