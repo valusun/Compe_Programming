@@ -1,7 +1,12 @@
-def GeneratorSequence(n):
+def GetSequence(n):
     if n == 1:
         return [1]
-    return GeneratorSequence(n - 1) + [n] + GeneratorSequence(n - 1)
+    return GetSequence(n - 1) + [n] + GetSequence(n - 1)
 
 
-print(*GeneratorSequence(int(input())))
+def main():
+    print(*GetSequence(int(input())))
+
+
+if __name__ == "__main__":
+    main()

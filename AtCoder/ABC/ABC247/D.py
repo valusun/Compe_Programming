@@ -1,24 +1,28 @@
 from collections import deque
 
 
-Q = int(input())
-query = [list(map(int, input().split())) for _ in range(Q)]
-queue = deque()
+def main():
+    Q = int(input())
+    queue = deque()
+    for _ in range(Q):
+        query = list(map(int, input().split()))
+        if query[0] == 1:
+            x, c = query[1], query[2]
+            queue.append([x, c])
+        else:
+            c = query[1]
+            res = 0
+            while c:
+                ball, ball_num = queue.popleft()
+                if ball_num < c:
+                    res += ball * ball_num
+                    c -= ball_num
+                else:
+                    res += ball * c
+                    queue.appendleft([ball, ball_num - c])
+                    c = 0
+            print(res)
 
-for i in range(Q):
-    t, *a = query[i]
-    if t == 1:
-        queue.append([a[0], a[1]])
-    else:
-        limit = a[0]
-        now = 0
-        while limit:
-            x, c = queue.popleft()
-            if limit > c:
-                now += x * c
-                limit -= c
-            else:
-                now += x * limit
-                queue.appendleft([x, c - limit])
-                limit = 0
-        print(now)
+
+if __name__ == "__main__":
+    main()
