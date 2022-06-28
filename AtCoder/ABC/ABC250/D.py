@@ -1,11 +1,11 @@
 def GeneratePrimeNumbers(n: int):
-    """インデックス番号が素数の箇所を1としたリストを生成する
+    """エラトステネスの篩を用いて素数のリストを生成する
 
     Args:
         n (int): 上限
 
     Returns:
-        primes (list[int]): 引数までの素数
+        list[int]: 引数までの素数
     """
     primes = [0, 1] * (n // 2 + 1)
     if n % 2 == 0:
