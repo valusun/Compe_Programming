@@ -1,20 +1,12 @@
-from collections import defaultdict
-
-
-def GenerateStandardDict(word: str):
-    """アルファベットと出現回数を記録した辞書を作る"""
-
-    alphabet_counts = defaultdict(int)
-    for s in sorted(word):
-        alphabet_counts[s] += 1
-    return alphabet_counts
+import string
 
 
 def main():
     N = int(input())
     words = [input() for _ in range(N)]
-    alphabet_counts = GenerateStandardDict(words[0])
-    for word in words[1:]:
+    MAX_LENGTH = 51
+    alphabet_counts = dict.fromkeys(string.ascii_lowercase, MAX_LENGTH)
+    for word in words:
         for s in alphabet_counts.keys():
             alphabet_counts[s] = min(alphabet_counts[s], word.count(s))
     ans = ""
