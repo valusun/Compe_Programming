@@ -3,11 +3,8 @@ def main():
     E = input()
     ans = ""
     for i in range(len(E)):
-        ans += O[i]
-        ans += E[i]
-    if len(O) > len(E):
-        ans += O[-1]
-    print(ans)
+        ans += O[i] + E[i]
+    print(ans + O[-1] if len(O) > len(E) else ans)
 
 
 if __name__ == "__main__":
