@@ -8,7 +8,7 @@ class CusumOperator:
     now_sum: int = field(init=False, default=0)
     action_cnt: int = field(init=False, default=0)
 
-    def _ActionCusumPositive(self, idx) -> None:
+    def _ManipulateCusumOfIndexToPositive(self, idx) -> None:
         """指定されたインデックスまでの累積和を正にするときの動作を行う"""
         if self.now_sum + self.A[idx] <= 0:
             self.action_cnt += 1 - (self.now_sum + self.A[idx])
@@ -16,7 +16,7 @@ class CusumOperator:
         else:
             self.now_sum += self.A[idx]
 
-    def _ActionCusumNegative(self, idx) -> None:
+    def _ManipulateCusumOfIndexToNegative(self, idx) -> None:
         """指定されたインデックスまでの累積和を負にするときの動作を行う"""
         if self.now_sum + self.A[idx] >= 0:
             self.action_cnt += 1 + (self.now_sum + self.A[idx])
@@ -24,21 +24,21 @@ class CusumOperator:
         else:
             self.now_sum += self.A[idx]
 
-    def GetActionCntFromFirstPositive(self):
+    def GetActionCountWhenFirstPositive(self):
         """最初の累積和の符号を正にしたときの操作回数を求める"""
         for i in range(self.N):
             if i % 2 == 0:
-                self._ActionCusumPositive(i)
+                self._ManipulateCusumOfIndexToPositive(i)
             else:
-                self._ActionCusumNegative(i)
+                self._ManipulateCusumOfIndexToNegative(i)
 
-    def GetActionCntFromFirstNegative(self):
+    def GetActionCountWhenFirstNegative(self):
         """最初の累積和の符号を負にしたときの操作回数を求める"""
         for i in range(self.N):
             if i % 2 == 0:
-                self._ActionCusumNegative(i)
+                self._ManipulateCusumOfIndexToNegative(i)
             else:
-                self._ActionCusumPositive(i)
+                self._ManipulateCusumOfIndexToPositive(i)
 
 
 def main():
@@ -46,8 +46,8 @@ def main():
     A = list(map(int, input().split()))
     first_positive = CusumOperator(N, A)
     first_negative = CusumOperator(N, A)
-    first_positive.GetActionCntFromFirstPositive()
-    first_negative.GetActionCntFromFirstNegative()
+    first_positive.GetActionCountWhenFirstPositive()
+    first_negative.GetActionCountWhenFirstNegative()
     print(min(first_positive.action_cnt, first_negative.action_cnt))
 
 
