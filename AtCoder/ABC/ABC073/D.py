@@ -7,7 +7,7 @@ def main():
     INF = 10**18
     dist = [[INF] * N for _ in range(N)]
     for i in range(N):
-        dist[i][i] = INF
+        dist[i][i] = 0
     for _ in range(M):
         a, b, c = map(int, input().split())
         dist[a - 1][b - 1] = c
