@@ -322,7 +322,7 @@ def main():
     worker.ConnectNeighbor()
     while worker.action_limit:
         worker.Work()
-        Output(moved_roots, connected_pc)
+    Output(moved_roots, connected_pc)
 
 
 if __name__ == "__main__":
