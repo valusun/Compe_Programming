@@ -1,3 +1,1 @@
-# リンク先
-
-[ここ](https://atcoder.jp/contests/typical90)
+# [問題リンク先](https://atcoder.jp/contests/typical90)
