@@ -49,7 +49,7 @@ class Generator(metaclass=ABCMeta):
 @dataclass
 class ABC(Generator):
     def GenerateFile(self):
-        self._GenerateFiles(26)
+        self._GenerateFiles(4)
 
 
 @dataclass
