@@ -8,6 +8,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 template_file_path: Path = Path("Utils/template.py")
+
+logger = logging.getLogger(__name__)
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -21,7 +27,7 @@ class Generator(metaclass=ABCMeta):
 
     def GenerateFolder(self):
         os.makedirs(path := (Path(f"./{self.folder_name}/{self.contest_name}")))
-        logging.info(f"{self.contest_name}フォルダを作成しました")
+        logger.info(f"{self.contest_name}フォルダを作成しました")
         object.__setattr__(self, "path", path)
 
     def _GenerateFiles(self, file_cnt: int) -> None:
@@ -32,7 +38,7 @@ class Generator(metaclass=ABCMeta):
             とりあえずA~Zまで対応する(26より大きい数値はエラーを吐く)
         """
         if file_cnt > 26:
-            logging.ERROR("26以内で指定してください")
+            logger.ERROR("26以内で指定してください")
             return
         for num in range(file_cnt):
             file_name = string.ascii_uppercase[num]
