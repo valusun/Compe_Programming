@@ -9,12 +9,15 @@ from pathlib import Path
 
 template_file_path: Path = Path("Utils/template.py")
 
+# ログ掃き出し設定
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
 handler.setLevel(logging.INFO)
-logger.setLevel(logging.INFO)
+format_setting = "%(asctime)s [%(levelname)s] %(message)s"
+formatter = logging.Formatter(format_setting)
+handler.setFormatter(formatter)
 logger.addHandler(handler)
-logging.basicConfig(level=logging.DEBUG)
 
 
 @dataclass
