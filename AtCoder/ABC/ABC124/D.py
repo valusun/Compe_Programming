@@ -1,3 +1,4 @@
+from itertools import groupby
 from typing import NamedTuple
 
 
@@ -6,27 +7,10 @@ class EncodeRecord(NamedTuple):
     cnt: int
 
 
-def GetRunLengthEncoding(S: str):
-    """ランレングス圧縮を行う"""
-
-    pre = S[0]
-    cnt = 1
-    ret = []
-    for s in S[1:]:
-        if s == pre:
-            cnt += 1
-        else:
-            ret.append(EncodeRecord(pre, cnt))
-            cnt = 1
-        pre = s
-    ret.append(EncodeRecord(pre, cnt))
-    return ret
-
-
 def main():
     N, K = map(int, input().split())
     S = input()
-    encode_S = GetRunLengthEncoding(S)
+    encode_S = [EncodeRecord(k, len(list(v))) for k, v in groupby(S)]
     ans = 0
     left = 0
     res = 0
