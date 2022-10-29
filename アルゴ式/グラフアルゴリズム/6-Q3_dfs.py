@@ -1,4 +1,4 @@
-# TODO: REで落ちる謎を追う
+# REで落ちる謎を追う -> メモリ食い過ぎ
 import sys
 
 sys.setrecursionlimit(10**9)
