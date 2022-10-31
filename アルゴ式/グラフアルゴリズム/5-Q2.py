@@ -9,21 +9,20 @@ def main():
     for _ in range(M):
         a, b = map(int, input().split())
         Graph[a].append(b)
-
     prev = [-1] * N
 
-    def dfs(v, visited):
+    def dfs(v):
         visited[v] = True
-        for u in Graph[v]:
-            if visited[u]:
+        for nv in Graph[v]:
+            if visited[nv]:
                 continue
-            visited[u] = True
-            prev[u] = v
-            dfs(u, visited)
+            visited[nv] = True
+            prev[nv] = v
+            dfs(nv)
 
     visited = [False] * N
     visited[S] = True
-    dfs(S, visited)
+    dfs(S)
 
     ans = [G]
     while ans[-1] != S:

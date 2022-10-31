@@ -15,11 +15,11 @@ def main():
     depth[0] = 0
     while Q:
         v = Q.popleft()
-        for u in Graph[v]:
-            if depth[u] != -1:
+        for nv in Graph[v]:
+            if depth[nv] != -1:
                 continue
-            depth[u] = depth[v] + 1
-            Q.append(u)
+            depth[nv] = depth[v] + 1
+            Q.append(nv)
     print(max(depth))
 
 

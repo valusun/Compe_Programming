@@ -18,10 +18,10 @@ def main():
     while Q:
         v = Q.popleft()
         ans.append(v)
-        for u in Graph[v]:
-            cnt[u] -= 1
-            if cnt[u] == 0:
-                Q.append(u)
+        for nv in Graph[v]:
+            cnt[nv] -= 1
+            if cnt[nv] == 0:
+                Q.append(nv)
 
     print("No" if len(ans) == N else "Yes")
 

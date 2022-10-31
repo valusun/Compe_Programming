@@ -8,13 +8,13 @@ def main():
         visited[s] = True
         while Q:
             v = Q.popleft()
-            for u in Graph[v]:
-                if visited[u]:
+            for nv in Graph[v]:
+                if visited[nv]:
                     continue
-                visited[u] = True
-                children[v].append(u)
-                parent[u] = v
-                Q.append(u)
+                visited[nv] = True
+                children[v].append(nv)
+                parent[nv] = v
+                Q.append(nv)
 
     def ChooseMinimumVertexCover():
         children_cnt = [len(c) for c in children]
@@ -24,8 +24,8 @@ def main():
             Q.append(v)
         while Q:
             v = Q.popleft()
-            for u in children[v]:
-                if not is_chosen[u]:
+            for nv in children[v]:
+                if not is_chosen[nv]:
                     is_chosen[v] = True
                     break
             p = parent[v]

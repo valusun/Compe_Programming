@@ -14,12 +14,12 @@ def main():
     Q.append(S)
     while Q:
         v = Q.popleft()
-        for u in Graph[v]:
-            if visited[u]:
+        for nv in Graph[v]:
+            if visited[nv]:
                 continue
-            visited[u] = True
-            prev[u] = v
-            Q.append(u)
+            visited[nv] = True
+            prev[nv] = v
+            Q.append(nv)
     ans = [G]
     while ans[-1] != S:
         ans.append(prev[ans[-1]])

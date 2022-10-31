@@ -16,10 +16,10 @@ def main():
     def dfs(v: int, h: int):
         nonlocal height
         height = max(height, h)
-        for u in Graph[v]:
-            if u not in visited:
-                visited.add(u)
-                dfs(u, h + 1)
+        for nv in Graph[v]:
+            if nv not in visited:
+                visited.add(nv)
+                dfs(nv, h + 1)
 
     dfs(0, 0)
     print(height)

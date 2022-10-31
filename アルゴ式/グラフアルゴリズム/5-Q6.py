@@ -11,10 +11,10 @@ def main():
 
     def dfs(v):
         visited[v] = True
-        for u in Graph[v]:
-            if visited[u]:
+        for nv in Graph[v]:
+            if visited[nv]:
                 continue
-            dfs(u)
+            dfs(nv)
         ans.append(v)
 
     for v in range(N):

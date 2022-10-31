@@ -9,13 +9,13 @@ def main():
         Q.append(start)
         while Q:
             v = Q.popleft()
-            for u in Graph[v]:
-                if visited[u]:
+            for nv in Graph[v]:
+                if visited[nv]:
                     continue
-                visited[u] = True
-                parent[u] = v
-                children[v].append(u)
-                Q.append(u)
+                visited[nv] = True
+                parent[nv] = v
+                children[v].append(nv)
+                Q.append(nv)
 
     def ChooseEdge():
         children_cnt = [len(c) for c in children]

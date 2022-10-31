@@ -15,10 +15,10 @@ def main():
     def dfs(v, c):
         Color[v] = c
         nc = "W" if c == "B" else "B"
-        for u in Graph[v]:
-            if Color[u] == ".":
-                dfs(u, nc)
-            elif Color[u] == nc:
+        for nv in Graph[v]:
+            if Color[nv] == ".":
+                dfs(nv, nc)
+            elif Color[nv] == nc:
                 continue
             else:
                 print("No")

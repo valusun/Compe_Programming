@@ -9,18 +9,18 @@ def main():
         Graph[a].append(b)
         Graph[b].append(a)
 
-    def bfs(v):
+    def bfs(s):
         Q = deque()
-        Q.append(v)
+        Q.append(s)
         dist = [-1] * N
-        dist[v] = 0
+        dist[s] = 0
         while Q:
-            u = Q.popleft()
-            for w in Graph[u]:
-                if dist[w] != -1:
+            v = Q.popleft()
+            for nv in Graph[v]:
+                if dist[nv] != -1:
                     continue
-                dist[w] = dist[u] + 1
-                Q.append(w)
+                dist[nv] = dist[v] + 1
+                Q.append(nv)
         return dist.index(max(dist)), max(dist)
 
     diam = bfs(bfs(0)[0])[1]

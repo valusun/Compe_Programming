@@ -8,13 +8,13 @@ def main():
         Q.append(s)
         while Q:
             v = Q.popleft()
-            for u in Graph[v]:
-                if visited[u]:
+            for nv in Graph[v]:
+                if visited[nv]:
                     continue
-                visited[u] = True
-                children[v].append(u)
-                parent[u] = v
-                Q.append(u)
+                visited[nv] = True
+                children[v].append(nv)
+                parent[nv] = v
+                Q.append(nv)
 
     def GetMaximumStableSetPattern():
         children_cnt = [len(c) for c in children]
@@ -25,10 +25,10 @@ def main():
         while Q:
             v = Q.popleft()
             a1 = a2 = 1
-            for u in children[v]:
-                a1 *= not_chosen_dp[u]
+            for nv in children[v]:
+                a1 *= not_chosen_dp[nv]
                 a1 %= MOD
-                a2 *= chosen_dp[u] + not_chosen_dp[u]
+                a2 *= chosen_dp[nv] + not_chosen_dp[nv]
                 a2 %= MOD
             chosen_dp[v] = a1
             not_chosen_dp[v] = a2

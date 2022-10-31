@@ -14,9 +14,9 @@ def main():
 
     def dfs(v: int, d: int):
         depth[v] = d
-        for u in Graph[v]:
-            if depth[u] == -1:
-                dfs(u, d + 1)
+        for nv in Graph[v]:
+            if depth[nv] == -1:
+                dfs(nv, d + 1)
 
     dfs(0, 0)
     print(*depth, sep="\n")

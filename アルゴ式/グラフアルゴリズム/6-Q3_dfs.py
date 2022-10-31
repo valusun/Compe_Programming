@@ -15,11 +15,11 @@ def main():
     depth[0] = 0
 
     def dfs(v):
-        for u in Graph[v]:
-            if depth[u] != -1:
+        for nv in Graph[v]:
+            if depth[nv] != -1:
                 continue
-            depth[u] = depth[v] + 1
-            dfs(u)
+            depth[nv] = depth[v] + 1
+            dfs(nv)
 
     dfs(0)
     print(max(depth))

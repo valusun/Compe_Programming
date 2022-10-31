@@ -8,13 +8,13 @@ def main():
         Q.append(s)
         while Q:
             v = Q.popleft()
-            for u in Graph[v]:
-                if visited[u]:
+            for nv in Graph[v]:
+                if visited[nv]:
                     continue
-                visited[u] = True
-                children[v].append(u)
-                parent[u] = v
-                Q.append(u)
+                visited[nv] = True
+                children[v].append(nv)
+                parent[nv] = v
+                Q.append(nv)
 
     def GetMinimumEdgeCover():
         nonlocal covered_edge_cnt

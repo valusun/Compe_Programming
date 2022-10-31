@@ -14,13 +14,13 @@ def main():
 
     def dfs(v):
         visited[v] = True
-        for u in Graph[v]:
-            if visited[u]:
-                if not finished[u]:
+        for nv in Graph[v]:
+            if visited[nv]:
+                if not finished[nv]:
                     print("Yes")
                     exit()
                 continue
-            dfs(u)
+            dfs(nv)
         finished[v] = True
 
     for v in range(N):

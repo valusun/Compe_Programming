@@ -16,11 +16,11 @@ def main():
         if v == G:
             print("Yes")
             exit()
-        for u in Graph[v]:
-            if visited[u]:
+        for nv in Graph[v]:
+            if visited[nv]:
                 continue
-            visited[u] = True
-            Q.append(u)
+            visited[nv] = True
+            Q.append(nv)
     print("No")
 
 

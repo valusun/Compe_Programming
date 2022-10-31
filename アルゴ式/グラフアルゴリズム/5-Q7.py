@@ -21,10 +21,10 @@ def main():
     while Q:
         v = Q.popleft()
         ans.append(v)
-        for u in Graph[v]:
-            cnt[u] -= 1
-            if not cnt[u]:
-                Q.append(u)
+        for nv in Graph[v]:
+            cnt[nv] -= 1
+            if not cnt[nv]:
+                Q.append(nv)
     print(*ans[::-1])
 
 

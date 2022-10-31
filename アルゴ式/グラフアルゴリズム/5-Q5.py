@@ -15,10 +15,10 @@ def main():
             v, c = q.popleft()
             Color[v] = c
             nc = "W" if c == "B" else "B"
-            for u in Graph[v]:
-                if Color[u] == ".":
-                    q.append((u, nc))
-                elif Color[u] == nc:
+            for nv in Graph[v]:
+                if Color[nv] == ".":
+                    q.append((nv, nc))
+                elif Color[nv] == nc:
                     continue
                 else:
                     print("No")

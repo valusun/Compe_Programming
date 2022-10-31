@@ -14,8 +14,8 @@ def main():
 
     def dfs(v: int):
         ans.append(v)
-        for u in graph[v]:
-            dfs(u)
+        for nv in graph[v]:
+            dfs(nv)
 
     dfs(0)
     print(*ans)

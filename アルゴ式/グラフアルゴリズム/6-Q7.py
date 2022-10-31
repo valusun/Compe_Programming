@@ -10,13 +10,13 @@ def main():
         parent[0] = 0
         while Q:
             v = Q.popleft()
-            for u in Graph[v]:
-                if visited[u]:
+            for nv in Graph[v]:
+                if visited[nv]:
                     continue
-                visited[u] = True
-                children[v].append(u)
-                parent[u] = v
-                Q.append(u)
+                visited[nv] = True
+                children[v].append(nv)
+                parent[nv] = v
+                Q.append(nv)
 
     def GetMaximumStableSet():
         """最大安定集合に属する頂点を選ぶ"""
@@ -28,8 +28,8 @@ def main():
         while Q:
             v = Q.popleft()
             is_chose = False
-            for u in children[v]:
-                is_chose |= is_chosen[u]  # 1つでも選ばれていたらTrueにする
+            for nv in children[v]:
+                is_chose |= is_chosen[nv]  # 1つでも選ばれていたらTrueにする
             is_chosen[v] = not is_chose
             p = parent[v]
             children_cnt[p] -= 1

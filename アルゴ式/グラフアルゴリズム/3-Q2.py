@@ -14,11 +14,11 @@ def main():
     Q.append(0)
     while Q:
         v = Q.popleft()
-        for u in Friends[v]:
-            if dist[u] != -1:
+        for nv in Friends[v]:
+            if dist[nv] != -1:
                 continue
-            dist[u] = dist[v] + 1
-            Q.append(u)
+            dist[nv] = dist[v] + 1
+            Q.append(nv)
     print(max(dist))
 
 

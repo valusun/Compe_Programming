@@ -14,9 +14,9 @@ def main():
 
     def dfs(v: int):
         res = 0
-        for u in Graph[v]:
-            if descendants[u] == -1:
-                res += dfs(u)
+        for nv in Graph[v]:
+            if descendants[nv] == -1:
+                res += dfs(nv)
         descendants[v] = res
         return res + 1
 

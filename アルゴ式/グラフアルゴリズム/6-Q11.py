@@ -8,13 +8,13 @@ def main():
         Q.append(s)
         while Q:
             v = Q.popleft()
-            for u in Graph[v]:
-                if visited[u]:
+            for nv in Graph[v]:
+                if visited[nv]:
                     continue
-                visited[u] = True
-                parent[u] = v
-                children[v].append(u)
-                Q.append(u)
+                visited[nv] = True
+                parent[nv] = v
+                children[v].append(nv)
+                Q.append(nv)
 
     def GetMaximumStableSet():
         children_cnt = [len(c) for c in children]
@@ -26,9 +26,9 @@ def main():
             v = Q.popleft()
             a1 = Weight[v]
             a2 = 0
-            for u in children[v]:
-                a1 += not_chosen_dp[u]
-                a2 += max(chosen_dp[u], not_chosen_dp[u])
+            for nv in children[v]:
+                a1 += not_chosen_dp[nv]
+                a2 += max(chosen_dp[nv], not_chosen_dp[nv])
             chosen_dp[v] = a1
             not_chosen_dp[v] = a2
             p = parent[v]

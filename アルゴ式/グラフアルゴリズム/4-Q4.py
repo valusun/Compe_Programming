@@ -14,11 +14,11 @@ def main():
     visited = [False] * N
 
     def dfs(v):
-        for u in Graph[v]:
-            if visited[u]:
+        for nv in Graph[v]:
+            if visited[nv]:
                 continue
-            visited[u] = True
-            dfs(u)
+            visited[nv] = True
+            dfs(nv)
 
     visited[0] = True
     dfs(0)

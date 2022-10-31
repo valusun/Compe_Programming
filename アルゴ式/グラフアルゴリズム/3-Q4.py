@@ -17,10 +17,10 @@ def main():
 
     while Q:
         v = Q.popleft()
-        for u in works[v]:
-            dependence_cnts[u] -= 1
-            if dependence_cnts[u] == 0:
-                Q.append(u)
+        for nv in works[v]:
+            dependence_cnts[nv] -= 1
+            if dependence_cnts[nv] == 0:
+                Q.append(nv)
     print("Yes" if max(dependence_cnts) == 0 else "No")
 
 
