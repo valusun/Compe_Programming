@@ -4,7 +4,6 @@ def main():
     Q = list(map(int, input().split()))
     R = list(map(int, input().split()))
     PQR = [[P[i], Q[i], R[i]] for i in range(N)]
-    print(PQR)
     INF = 10**9
     dp = [[INF] * 3 for _ in range(N)]
     dp[0] = PQR[0]
