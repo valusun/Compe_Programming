@@ -3,13 +3,13 @@ import os
 import shutil
 import string
 import subprocess
-from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
 
-template_file_path: Path = Path("Utils/template.py")
+template_python_file: Path = Path("Utils/template.py")
+template_toml_file: Path = Path("Utils/template.toml")
 
-# ログ掃き出し設定
+# ログ設定
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
@@ -21,17 +21,46 @@ logger.addHandler(handler)
 
 
 @dataclass
-class Generator(metaclass=ABCMeta):
+class Generator:
+    # TODO: 命名考える
     contest_name: str
-    folder_name: str = field(init=False, default=str)
+    folder_name: str = field(init=False, default_factory=str)
+    folder_path: Path = field(init=False, default_factory=Path)
 
     def __post_init__(self):
         self.folder_name = self.contest_name[:3]
+        self._GenerateFolder()
 
-    def GenerateFolder(self):
-        os.makedirs(path := (Path(f"./{self.folder_name}/{self.contest_name}")))
+    def _GenerateFolder(self):
+        self.folder_path = Path(f"./{self.folder_name}/{self.contest_name}")
+        os.makedirs(self.folder_path)
         logger.info(f"{self.contest_name}フォルダを作成しました")
-        object.__setattr__(self, "path", path)
+
+    def _GeneratePythonFile(self, file_name: str) -> None:
+        file_path = Path(f"{self.folder_path}/{file_name}.py")
+        shutil.copy(template_python_file, file_path)
+        subprocess.run(["code", "-g", f"{file_path}:2:5"], shell=True)
+
+    def _GenerateRustFile(self, file_name: str) -> None:
+        rust_file_path = Path(f"{self.folder_path}/{file_name.lower()}")
+        subprocess.run(["cargo", "new", rust_file_path])
+        self._EditCargoTomlFile(rust_file_path, file_name)
+
+    def _EditCargoTomlFile(self, file_path: Path, package_name: str):
+        """Cargoパッケージ内のtomlを編集する"""
+
+        def GetWriteData() -> str:
+            """書き込むデータを取得する"""
+            with open(edited_file, "r", encoding="utf-8") as file:
+                template = string.Template(file.read())
+                place_holders = {"package_name": package_name}
+                return template.substitute(place_holders)
+
+        edited_file = file_path / "Cargo.toml"
+        shutil.copy(template_toml_file, edited_file)
+        template = GetWriteData()
+        with open(edited_file, "w", encoding="utf-8") as file:
+            file.write(template)
 
     def _GenerateFiles(self, file_cnt: int) -> None:
         """受け取った個数分のファイルを作成する。
@@ -40,44 +69,38 @@ class Generator(metaclass=ABCMeta):
             A,B,...,Y,Zとナンバリングしたファイルを作る
             とりあえずA~Zまで対応する(26より大きい数値はエラーを吐く)
         """
+
         if file_cnt > 26:
-            logger.ERROR("26以内で指定してください")
-            return
+            raise ValueError("ファイル数は26以内で指定してください")
         for num in range(file_cnt):
             file_name = string.ascii_uppercase[num]
-            shutil.copy(
-                template_file_path, file_path := (Path(f"{self.path}/{file_name}.py"))
-            )
-            subprocess.run(["code", "-g", f"{file_path}:2:5"], shell=True)
+            self._GeneratePythonFile(file_name)
+            self._GenerateRustFile(file_name)
 
-    @abstractmethod
-    def GenerateFile(self):
-        pass
+    def GenerateFiles(self, file_cnt: int):
+        self._GenerateFiles(file_cnt)
 
 
-@dataclass
+# TODO: いい感じにする
 class ABC(Generator):
-    def GenerateFile(self):
-        self._GenerateFiles(4)
+    def Generate(self):
+        self.GenerateFiles(4)
 
 
-@dataclass
 class ARC(Generator):
-    def GenerateFile(self):
-        self._GenerateFiles(2)
+    def Generate(self):
+        self.GenerateFiles(2)
 
 
-@dataclass
 class AHC(Generator):
-    def GenerateFile(self):
-        self._GenerateFiles(1)
+    def Generate(self):
+        self.GenerateFiles(1)
 
 
 def main():
     contest_name = input("Contest Name?: ").upper()
     cls: Generator = globals()[contest_name[:3]](contest_name)
-    cls.GenerateFolder()
-    cls.GenerateFile()
+    cls.Generate()
 
 
 if __name__ == "__main__":
