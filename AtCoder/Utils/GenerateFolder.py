@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 template_python_file: Path = Path("Utils/template.py")
+template_rust_file: Path = Path("Utils/main.rs")
 template_toml_file: Path = Path("Utils/template.toml")
 
 # ログ設定
@@ -42,9 +43,11 @@ class Generator:
         subprocess.run(["code", "-g", f"{file_path}:2:5"], shell=True)
 
     def _GenerateRustFile(self, file_name: str) -> None:
-        rust_file_path = Path(f"{self.folder_path}/{file_name.lower()}")
-        subprocess.run(["cargo", "new", rust_file_path])
-        self._EditCargoTomlFile(rust_file_path, file_name)
+        toml_file_path = Path(f"{self.folder_path}/{file_name.lower()}")
+        subprocess.run(["cargo", "new", toml_file_path])
+        main_file_path = Path(f"{self.folder_path}/{file_name.lower()}/src")
+        shutil.copy(template_rust_file, main_file_path)
+        self._EditCargoTomlFile(toml_file_path, file_name)
 
     def _EditCargoTomlFile(self, file_path: Path, package_name: str):
         """Cargoパッケージ内のtomlを編集する"""
