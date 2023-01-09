@@ -53,7 +53,7 @@ class Generator:
             """書き込むデータを取得する"""
             with open(edited_file, "r", encoding="utf-8") as file:
                 template = string.Template(file.read())
-                place_holders = {"package_name": package_name}
+                place_holders = {"package_name": package_name.lower()}
                 return template.substitute(place_holders)
 
         edited_file = file_path / "Cargo.toml"
