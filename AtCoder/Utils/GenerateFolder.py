@@ -6,9 +6,9 @@ import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
-template_python_file: Path = Path("Utils/template.py")
-template_rust_file: Path = Path("Utils/main.rs")
-template_toml_file: Path = Path("Utils/template.toml")
+template_python_file: Path = Path(__file__).parent / "template.py"
+template_rust_file: Path = Path(__file__).parent / "main.rs"
+template_toml_file: Path = Path(__file__).parent / "template.toml"
 
 # ログ設定
 logger = logging.getLogger(__name__)
@@ -33,7 +33,8 @@ class Generator:
         self._GenerateFolder()
 
     def _GenerateFolder(self):
-        self.folder_path = Path(f"./{self.folder_name}/{self.contest_name}")
+        base_path = Path(__file__).parents[1]
+        self.folder_path = base_path / self.folder_name / self.contest_name
         os.makedirs(self.folder_path)
         logger.info(f"{self.contest_name}フォルダを作成しました")
 
