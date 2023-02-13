@@ -79,7 +79,7 @@ class Generator:
         for num in range(file_cnt):
             file_name = string.ascii_uppercase[num]
             self._GeneratePythonFile(file_name)
-            self._GenerateRustFile(file_name)
+            # self._GenerateRustFile(file_name)
 
     def GenerateFiles(self, file_cnt: int):
         self._GenerateFiles(file_cnt)
