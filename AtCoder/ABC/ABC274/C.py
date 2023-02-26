@@ -5,7 +5,7 @@ def main():
     for a in A:
         depths.append(depths[a - 1] + 1)
         depths.append(depths[a - 1] + 1)
-    print(depths)
+    print(*depths, sep="\n")
 
 
 if __name__ == "__main__":
