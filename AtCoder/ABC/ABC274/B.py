@@ -1,5 +1,5 @@
 def main():
-    H, W = map(int, input().split())
+    H, _ = map(int, input().split())
     c = [list(input()) for _ in range(H)]
     ans = []
     for cc in zip(*c):
