@@ -1,12 +1,11 @@
-import numpy as np
-
-
 def main():
-    H, W, x, y = map(int, input().split())
-    fields = np.array([list(input()) for _ in range(H)])
-    extraction = fields[x - 1 : x + 2, y - 1 : y + 2]
-    for ex in extraction:
-        print(*ex, sep="")
+    H, _, x, y = map(int, input().split())
+    fields = [list(input()) for _ in range(H)]
+    for i in range(3):
+        tmp = []
+        for j in range(3):
+            tmp.append(fields[x + i - 1][y + j - 1])
+        print(*tmp, sep="")
 
 
 if __name__ == "__main__":
