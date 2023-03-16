@@ -18,7 +18,7 @@ class LinkedList:
         self.head = new_node
 
     def output(self, k: int) -> None:
-        """k番目から出力する"""
+        """k番目まで出力する"""
         current = self.head
         cnt = 0
         output_data = []
