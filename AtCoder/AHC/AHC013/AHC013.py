@@ -156,7 +156,7 @@ class ServerRoom:
         self.no_moved_pc.append(Coordinate(tx, ty))
 
 
-class Human:
+class Worker:
     def __init__(self, n: int, k: int, f: List[List[str]]):
         self.sr: ServerRoom = ServerRoom(n, k, f)
         self.action_limit: int = 100 * k
@@ -318,7 +318,7 @@ def Output(roots, connected):
 
 def main():
     field_length, pc_kind_num, fields = Input()
-    worker = Human(field_length, pc_kind_num, fields)
+    worker = Worker(field_length, pc_kind_num, fields)
     worker.ConnectNeighbor()
     while worker.action_limit:
         worker.Work()
