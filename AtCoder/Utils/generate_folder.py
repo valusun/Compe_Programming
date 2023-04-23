@@ -6,6 +6,8 @@ import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from setting_rust_analyzer import setting_rust_analyzer
+
 template_python_file: Path = Path(__file__).parent / "template.py"
 template_rust_file: Path = Path(__file__).parent / "main.rs"
 template_toml_file: Path = Path(__file__).parent / "template.toml"
@@ -43,14 +45,15 @@ class Generator:
         shutil.copy(template_python_file, file_path)
         subprocess.run(["code", "-g", f"{file_path}:2:5"], shell=True)
 
-    def _GenerateRustFile(self, file_name: str) -> None:
-        toml_file_path = Path(f"{self.folder_path}/{file_name.lower()}")
-        subprocess.run(["cargo", "new", toml_file_path])
-        main_file_path = Path(f"{self.folder_path}/{file_name.lower()}/src")
-        shutil.copy(template_rust_file, main_file_path)
-        self._EditCargoTomlFile(toml_file_path, file_name)
+    def _GenerateRustFile(self, file_name: str) -> Path:
+        rust_dir = Path(f"{self.folder_path}/{file_name.lower()}")
+        subprocess.run(["cargo", "new", rust_dir])
+        main_file_dir = Path(f"{rust_dir}/src")
+        shutil.copy(template_rust_file, main_file_dir)
+        self._EditCargoTomlFile(rust_dir, file_name)
+        return rust_dir
 
-    def _EditCargoTomlFile(self, file_path: Path, package_name: str):
+    def _EditCargoTomlFile(self, file_path: Path, package_name: str) -> None:
         """Cargoパッケージ内のtomlを編集する"""
 
         def GetWriteData() -> str:
@@ -76,10 +79,13 @@ class Generator:
 
         if file_cnt > 26:
             raise ValueError("ファイル数は26以内で指定してください")
+        cargo_file_paths: list[Path] = []
         for num in range(file_cnt):
             file_name = string.ascii_uppercase[num]
             self._GeneratePythonFile(file_name)
-            # self._GenerateRustFile(file_name)
+            rust_dir = self._GenerateRustFile(file_name)
+            cargo_file_paths.append(rust_dir / "Cargo.toml")
+        setting_rust_analyzer(cargo_file_paths)
 
     def GenerateFiles(self, file_cnt: int):
         self._GenerateFiles(file_cnt)
