@@ -70,7 +70,6 @@ def main():
     contest_name = input("Contest Name?: ").upper()
     match contest_name[:3]:
         case "ABC":
-            print(contest_name)
             contest = ABCContest(contest_name)
         case "ARC":
             contest = ARCContest(contest_name)
