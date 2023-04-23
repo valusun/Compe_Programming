@@ -35,38 +35,38 @@ class Generator:
         self._GenerateFolder()
 
     def _GenerateFolder(self):
-        base_path = Path(__file__).parents[1]
-        self.folder_path = base_path / self.folder_name / self.contest_name
+        contest_dir = Path(__file__).parents[1]
+        self.folder_path = contest_dir / self.folder_name / self.contest_name
         os.makedirs(self.folder_path)
         logger.info(f"{self.contest_name}フォルダを作成しました")
 
     def _GeneratePythonFile(self, file_name: str) -> None:
-        file_path = Path(f"{self.folder_path}/{file_name}.py")
-        shutil.copy(template_python_file, file_path)
-        subprocess.run(["code", "-g", f"{file_path}:2:5"], shell=True)
+        py_file = Path(f"{self.folder_path}/{file_name}.py")
+        shutil.copy(template_python_file, py_file)
+        subprocess.run(["code", "-g", f"{py_file}:2:5"], shell=True)
 
     def _GenerateRustFile(self, file_name: str) -> Path:
         rust_dir = Path(f"{self.folder_path}/{file_name.lower()}")
         subprocess.run(["cargo", "new", rust_dir])
-        main_file_dir = Path(f"{rust_dir}/src")
-        shutil.copy(template_rust_file, main_file_dir)
+        src_dir = Path(f"{rust_dir}/src")
+        shutil.copy(template_rust_file, src_dir)
         self._EditCargoTomlFile(rust_dir, file_name)
         return rust_dir
 
-    def _EditCargoTomlFile(self, file_path: Path, package_name: str) -> None:
+    def _EditCargoTomlFile(self, rust_dir: Path, package_name: str) -> None:
         """Cargoパッケージ内のtomlを編集する"""
 
         def GetWriteData() -> str:
             """書き込むデータを取得する"""
-            with open(edited_file, "r", encoding="utf-8") as file:
+            with open(cargo_toml, "r", encoding="utf-8") as file:
                 template = string.Template(file.read())
                 place_holders = {"package_name": package_name.lower()}
                 return template.substitute(place_holders)
 
-        edited_file = file_path / "Cargo.toml"
-        shutil.copy(template_toml_file, edited_file)
+        cargo_toml = rust_dir / "Cargo.toml"
+        shutil.copy(template_toml_file, cargo_toml)
         template = GetWriteData()
-        with open(edited_file, "w", encoding="utf-8") as file:
+        with open(cargo_toml, "w", encoding="utf-8") as file:
             file.write(template)
 
     def _GenerateFiles(self, file_cnt: int) -> None:
