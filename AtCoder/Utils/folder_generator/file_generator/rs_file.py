@@ -17,15 +17,16 @@ class RustFile:
     def _edit_cargo_toml(self, cargo_path: Path, package_name: str) -> None:
         """Cargo.tomlをテンプレートのものに置き換える"""
 
-        def _write_toml_data() -> str:
+        def write_toml_data() -> str:
             """Cargo.tomlに書き込むデータを取得する"""
             with open(cargo_path, "r", encoding="utf-8") as file:
                 template = string.Template(file.read())
                 return template.substitute({"package_name": package_name.lower()})
 
         shutil.copy(self.template_toml_file, cargo_path)
+        writing_data = write_toml_data()
         with open(cargo_path, "w", encoding="utf-8") as file:
-            file.write(_write_toml_data())
+            file.write(writing_data)
 
     def generate_file(self, parent_dir: Path, package_name: str) -> None:
         """対象のフォルダ下にRustファイルを作成する"""
