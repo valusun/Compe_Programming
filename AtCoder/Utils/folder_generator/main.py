@@ -30,7 +30,7 @@ class Contest(ABC):
         """ソースコードファイルを作成する"""
         for file_name in problems:
             py_file.PythonFile().generate_file(parent_dir, file_name)
-            rs_file.RustFile().generate_file(parent_dir, file_name)
+            # rs_file.RustFile().generate_file(parent_dir, file_name)
 
     def _generate_problem_folder(self, tgt_problems: tuple[str, ...]) -> None:
 
@@ -38,7 +38,7 @@ class Contest(ABC):
         contest_dir = self._generate_contest_type_folder(root_dir)
         problem_dir = self._generate_contest_name_folder(contest_dir)
         self._generate_source_files(problem_dir, tgt_problems)
-        json_file.Settings(problem_dir).setting_rust_analyzer()
+        # json_file.Settings(problem_dir).setting_rust_analyzer()
 
     @abstractmethod
     def generate_folder(self) -> None:
