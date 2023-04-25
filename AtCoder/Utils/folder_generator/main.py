@@ -9,7 +9,7 @@ from file_generator import py_file, rs_file, json_file
 class Contest(ABC):
     contest_name: str
     contest_type: str = field(init=False)
-    problems: tuple[str, ...] = ("a", "b", "c", "d", "e", "f", "g", "ex")
+    problems: tuple[str, ...] = ("A", "B", "C", "D", "E", "F", "G", "Ex")
 
     def __post_init__(self):
         self.contest_type = self.contest_name[:3]
