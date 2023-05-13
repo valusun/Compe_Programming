@@ -4,20 +4,17 @@ from collections import deque
 
 def main():
     Q = int(input())
-    A = deque()
-    sorted_A = []
+    A = deque([])
+    SA = []
     for _ in range(Q):
-        c, *x = map(int, input().split())
+        c, *a = map(int, input().split())
         if c == 1:
-            A.append(x[0])
+            A.append(a[0])
         elif c == 2:
-            if len(sorted_A):
-                print(heapq.heappop(sorted_A))
-            else:
-                print(A.popleft())
+            print(heapq.heappop(SA) if SA else A.popleft())
         else:
-            while len(A):
-                heapq.heappush(sorted_A, A.popleft())
+            while A:
+                heapq.heappush(SA, A.popleft())
 
 
 if __name__ == "__main__":
