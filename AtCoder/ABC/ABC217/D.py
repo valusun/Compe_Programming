@@ -1,381 +1,158 @@
-class AVLTree:
-    class Node:
-        # key : ノードのキー
-        # val : ノードの値
-        # lch : 左のノード
-        # rch : 右のノード
-        # bias : 平衡度(左部分木の高さ - 右部分木の高さ)
-        # size : 根としたときの部分木の大きさ
+# https://github.com/tatyam-prime/SortedSet/blob/main/SortedSet.py
+import math
+from bisect import bisect_left, bisect_right
+from typing import Generic, Iterable, Iterator, TypeVar, Optional, List
 
-        def __init__(self, key, val):
-            self.key = key
-            self.val = val
-            self.lch = None
-            self.rch = None
-            self.bias = 0
-            self.size = 1
+T = TypeVar("T")
 
-    def __init__(self):
-        self.root = None
 
-    def rotate_left(self, v):
-        u = v.rch
-        u.size = v.size
-        v.size -= u.rch.size + 1 if u.rch is not None else 1
-        v.rch = u.lch
-        u.lch = v
-        if u.bias == -1:
-            u.bias = v.bias = 0
-        else:
-            u.bias = 1
-            v.bias = -1
-        return u
+class SortedSet(Generic[T]):
+    BUCKET_RATIO = 50
+    REBUILD_RATIO = 170
 
-    def rotate_right(self, v):
-        u = v.lch
-        u.size = v.size
-        v.size -= u.lch.size + 1 if u.lch is not None else 1
-        v.lch = u.rch
-        u.rch = v
-        if u.bias == 1:
-            u.bias = v.bias = 0
-        else:
-            u.bias = -1
-            v.bias = 1
-        return u
+    def _build(self, a=None) -> None:
+        "Evenly divide `a` into buckets."
+        if a is None:
+            a = list(self)
+        size = self.size = len(a)
+        bucket_size = int(math.ceil(math.sqrt(size / self.BUCKET_RATIO)))
+        self.a = [a[size * i // bucket_size : size * (i + 1) // bucket_size] for i in range(bucket_size)]
 
-    def rotateLR(self, v):
-        u = v.lch
-        t = u.rch
-        t.size = v.size
-        v.size -= u.size - (t.rch.size if t.rch is not None else 0)
-        u.size -= t.rch.size + 1 if t.rch is not None else 1
-        u.rch = t.lch
-        t.lch = u
-        v.lch = t.rch
-        t.rch = v
-        self.update_bias_double(t)
-        return t
+    def __init__(self, a: Iterable[T] = []) -> None:
+        "Make a new SortedSet from iterable. / O(N) if sorted and unique / O(N log N)"
+        a = list(a)
+        if not all(a[i] < a[i + 1] for i in range(len(a) - 1)):
+            a = sorted(set(a))
+        self._build(a)
 
-    def rotateRL(self, v):
-        u = v.rch
-        t = u.lch
-        t.size = v.size
-        v.size -= u.size - (t.lch.size if t.lch is not None else 0)
-        u.size -= t.lch.size + 1 if t.lch is not None else 1
-        u.lch = t.rch
-        t.rch = u
-        v.rch = t.lch
-        t.lch = v
-        self.update_bias_double(t)
-        return t
+    def __iter__(self) -> Iterator[T]:
+        for i in self.a:
+            for j in i:
+                yield j
 
-    def update_bias_double(self, v):
-        if v.bias == 1:
-            v.rch.bias = -1
-            v.lch.bias = 0
-        elif v.bias == -1:
-            v.rch.bias = 0
-            v.lch.bias = 1
-        else:
-            v.rch.bias = 0
-            v.lch.bias = 0
-        v.bias = 0
+    def __reversed__(self) -> Iterator[T]:
+        for i in reversed(self.a):
+            for j in reversed(i):
+                yield j
 
-    def insert(self, key, val):
-        """挿入
+    def __len__(self) -> int:
+        return self.size
 
-        指定したkeyに値valを挿入する。
-        その後、平衡を保つように回転を行う。
+    def __repr__(self) -> str:
+        return "SortedSet" + str(self.a)
 
-        Args:
-            key (any): キー。
-            val (any): 値。
+    def __str__(self) -> str:
+        s = str(list(self))
+        return "{" + s[1 : len(s) - 1] + "}"
 
-        Note:
-            同じキーがあった場合に上書きする。
+    def _find_bucket(self, x: T) -> List[T]:
+        "Find the bucket which should contain x. self must not be empty."
+        for a in self.a:
+            if x <= a[-1]:
+                return a
+        return a
 
-        """
-        if self.root is None:
-            self.root = AVLTree.Node(key, val)
-            return
-
-        v = self.root
-        history = []
-        while v is not None:
-            if key < v.key:
-                history.append((v, 1))
-                v = v.lch
-            elif v.key < key:
-                history.append((v, -1))
-                v = v.rch
-            elif v.key == key:
-                v.val = val
-                return
-
-        p, pdir = history[-1]
-        if pdir == 1:
-            p.lch = AVLTree.Node(key, val)
-        else:
-            p.rch = AVLTree.Node(key, val)
-
-        while history:
-            v, direction = history.pop()
-            v.bias += direction
-            v.size += 1
-
-            new_v = None
-            b = v.bias
-            if b == 0:
-                break
-
-            if b == 2:
-                u = v.lch
-                if u.bias == -1:
-                    new_v = self.rotateLR(v)
-                else:
-                    new_v = self.rotate_right(v)
-                break
-            if b == -2:
-                u = v.rch
-                if u.bias == 1:
-                    new_v = self.rotateRL(v)
-                else:
-                    new_v = self.rotate_left(v)
-                break
-
-        if new_v is not None:
-            if len(history) == 0:
-                self.root = new_v
-                return
-            p, pdir = history.pop()
-            p.size += 1
-            if pdir == 1:
-                p.lch = new_v
-            else:
-                p.rch = new_v
-
-        while history:
-            p, pdir = history.pop()
-            p.size += 1
-
-    def delete(self, key):
-        """削除
-
-        指定したkeyの要素を削除する。
-        その後、平衡を保つように回転を行う。
-
-        Args:
-            key (any): キー。
-
-        Return:
-            bool: 指定したキーが存在するならTrue、しないならFalse。
-
-        """
-        v = self.root
-        history = []
-        while v is not None:
-            if key < v.key:
-                history.append((v, 1))
-                v = v.lch
-            elif v.key < key:
-                history.append((v, -1))
-                v = v.rch
-            else:
-                break
-        else:
+    def __contains__(self, x: T) -> bool:
+        if self.size == 0:
             return False
+        a = self._find_bucket(x)
+        i = bisect_left(a, x)
+        return i != len(a) and a[i] == x
 
-        if v.lch is not None:
-            history.append((v, 1))
-            lmax = v.lch
-            while lmax.rch is not None:
-                history.append((lmax, -1))
-                lmax = lmax.rch
-
-            v.key = lmax.key
-            v.val = lmax.val
-
-            v = lmax
-
-        c = v.rch if v.lch is None else v.lch
-
-        if history:
-            p, pdir = history[-1]
-            if pdir == 1:
-                p.lch = c
-            else:
-                p.rch = c
-        else:
-            self.root = c
+    def add(self, x: T) -> bool:
+        "Add an element and return True if added. / O(√N)"
+        if self.size == 0:
+            self.a = [[x]]
+            self.size = 1
             return True
-
-        while history:
-            new_p = None
-
-            p, pdir = history.pop()
-            p.bias -= pdir
-            p.size -= 1
-
-            b = p.bias
-            if b == 2:
-                if p.lch.bias == -1:
-                    new_p = self.rotateLR(p)
-                else:
-                    new_p = self.rotate_right(p)
-
-            elif b == -2:
-                if p.rch.bias == 1:
-                    new_p = self.rotateRL(p)
-                else:
-                    new_p = self.rotate_left(p)
-
-            elif b != 0:
-                break
-
-            if new_p is not None:
-                if len(history) == 0:
-                    self.root = new_p
-                    return True
-                gp, gpdir = history[-1]
-                if gpdir == 1:
-                    gp.lch = new_p
-                else:
-                    gp.rch = new_p
-                if new_p.bias != 0:
-                    break
-
-        while history:
-            p, pdir = history.pop()
-            p.size -= 1
-
+        a = self._find_bucket(x)
+        i = bisect_left(a, x)
+        if i != len(a) and a[i] == x:
+            return False
+        a.insert(i, x)
+        self.size += 1
+        if len(a) > len(self.a) * self.REBUILD_RATIO:
+            self._build()
         return True
 
-    def member(self, key):
-        """キーの存在チェック
+    def discard(self, x: T) -> bool:
+        "Remove an element and return True if removed. / O(√N)"
+        if self.size == 0:
+            return False
+        a = self._find_bucket(x)
+        i = bisect_left(a, x)
+        if i == len(a) or a[i] != x:
+            return False
+        a.pop(i)
+        self.size -= 1
+        if len(a) == 0:
+            self._build()
+        return True
 
-        指定したkeyがあるかどうか判定する。
+    def lt(self, x: T) -> Optional[T]:
+        "Find the largest element < x, or None if it doesn't exist."
+        for a in reversed(self.a):
+            if a[0] < x:
+                return a[bisect_left(a, x) - 1]
 
-        Args:
-            key (any): キー。
+    def le(self, x: T) -> Optional[T]:
+        "Find the largest element <= x, or None if it doesn't exist."
+        for a in reversed(self.a):
+            if a[0] <= x:
+                return a[bisect_right(a, x) - 1]
 
-        Return:
-            bool: 指定したキーが存在するならTrue、しないならFalse。
+    def gt(self, x: T) -> Optional[T]:
+        "Find the smallest element > x, or None if it doesn't exist."
+        for a in self.a:
+            if a[-1] > x:
+                return a[bisect_right(a, x)]
 
-        """
-        v = self.root
-        while v is not None:
-            if key < v.key:
-                v = v.lch
-            elif v.key < key:
-                v = v.rch
-            else:
-                return True
-        return False
+    def ge(self, x: T) -> Optional[T]:
+        "Find the smallest element >= x, or None if it doesn't exist."
+        for a in self.a:
+            if a[-1] >= x:
+                return a[bisect_left(a, x)]
 
-    def get(self, key):
-        """値の取り出し
+    def __getitem__(self, x: int) -> T:
+        "Return the x-th element, or IndexError if it doesn't exist."
+        if x < 0:
+            x += self.size
+        if x < 0:
+            raise IndexError
+        for a in self.a:
+            if x < len(a):
+                return a[x]
+            x -= len(a)
+        raise IndexError
 
-        指定したkeyの値を返す。
-        keyが存在しない場合はNoneを返す。
+    def index(self, x: T) -> int:
+        "Count the number of elements < x."
+        ans = 0
+        for a in self.a:
+            if a[-1] >= x:
+                return ans + bisect_left(a, x)
+            ans += len(a)
+        return ans
 
-        Args:
-            key (any): キー。
-
-        Return:
-            any: 指定したキーが存在するならその値、存在しないならNone。
-
-        """
-        v = self.root
-        while v is not None:
-            if key < v.key:
-                v = v.lch
-            elif v.key < key:
-                v = v.rch
-            else:
-                return v.val
-        return None
-
-    def lower_bound(self, key):
-        """下限つき探索
-
-        指定したkey以上で最小のキーを見つける。
-
-        Args:
-            key (any): キーの下限。
-
-        Return:
-            any: 条件を満たすようなキー。そのようなキーが一つも存在しないならNone。
-
-        """
-        # ret = float('inf')
-        ret = None
-        v = self.root
-        while v is not None:
-            if v.key >= key:
-                if ret is None or ret > v.key:
-                    ret = v.key
-                v = v.lch
-            else:
-                v = v.rch
-        return ret
-
-    def upper_bound(self, key):
-        """上限つき探索
-
-        指定したkey未満で最大のキーを見つける。
-
-        Args:
-            key (any): キーの上限。
-
-        Return:
-            any: 条件を満たすようなキー。そのようなキーが一つも存在しないならNone。
-
-        """
-        # ret = -float('inf')
-        ret = None
-        v = self.root
-        while v is not None:
-            if v.key < key:
-                if ret is None or ret < v.key:
-                    ret = v.key
-                v = v.rch
-            else:
-                v = v.lch
-        return ret
-
-    def find_kth_element(self, k):
-        """小さい方からk番目の要素を見つける
-
-        Args:
-            k (int): 何番目の要素か(0オリジン)。
-        """
-        v = self.root
-        s = 0
-        while v is not None:
-            t = s + v.lch.size if v.lch is not None else s
-            if t == k:
-                return v.key
-            elif t < k:
-                s = t + 1
-                v = v.rch
-            else:
-                v = v.lch
-        return None
+    def index_right(self, x: T) -> int:
+        "Count the number of elements <= x."
+        ans = 0
+        for a in self.a:
+            if a[-1] > x:
+                return ans + bisect_right(a, x)
+            ans += len(a)
+        return ans
 
 
 def main():
     L, Q = map(int, input().split())
-    AVL = AVLTree()
-    AVL.insert(0, 0)
-    AVL.insert(L, L)
-
+    SS = SortedSet([0, L])
     for _ in range(Q):
         c, x = map(int, input().split())
         if c == 1:
-            AVL.insert(x, x)
+            SS.add(x)
         else:
-            print(AVL.lower_bound(x) - AVL.upper_bound(x))
+            print(SS.gt(x) - SS.lt(x))
 
 
 if __name__ == "__main__":
