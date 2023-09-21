@@ -1,6 +1,7 @@
 "use strict";
 function longestPalindrome(s) {
     const n = s.length;
+    // dp[i][j]: s[i]からs[j]までが回文ならば`true`
     let dp = [];
     for (let i = 0; i < n; i++) {
         let tmp = [];
@@ -25,7 +26,6 @@ function longestPalindrome(s) {
             }
         }
     }
-    console.log(dp);
     return s.slice(left, right + 1);
 }
 ;
