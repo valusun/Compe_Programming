@@ -2,3 +2,4 @@
 target/
 *.pyc
 leetcode/node_modules
+tmp/
