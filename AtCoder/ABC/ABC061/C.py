@@ -1,15 +1,12 @@
 def main():
     N, K = map(int, input().split())
-    inserted_numbers = [0] * (10**5 + 1)
-    for _ in range(N):
-        a, b = map(int, input().split())
-        inserted_numbers[a] += b
-    seen = 0
-    for i, v in enumerate(inserted_numbers):
-        if seen + v >= K:
-            print(i)
+    array = sorted(list(list(map(int, input().split())) for _ in range(N)))
+    cnt = 0
+    for a, b in array:
+        if cnt + b >= K:
+            print(a)
             break
-        seen += v
+        cnt += b
 
 
 if __name__ == "__main__":
