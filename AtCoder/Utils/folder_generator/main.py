@@ -1,85 +1,86 @@
 from dataclasses import dataclass, field
-from abc import ABC, abstractmethod
 from pathlib import Path
 
-from file_generator import py_file, rs_file, json_file
+from file_generator import py_file  # , rs_file, json_file
+
+
+@dataclass(frozen=True)
+class Contest:
+    contest: str
+    file_count: int
+    filenames: list[str] = field(init=False, default_factory=list)
+    problem_names: tuple[str, ...] = ("A", "B", "C", "D", "E", "F", "G", "Ex")
+
+    def __post_init__(self):
+        if self.file_count > len(self.problem_names):
+            raise TypeError("問題の数が想定を超えています")
+        # HACK: `frozen=True`の弊害
+        object.__setattr__(self, "filenames", self.problem_names[: self.file_count])
+
+    @property
+    def contest_type(self):
+        return self.contest[:3]
+
+
+def ContestFactory(contest_name: str) -> Contest:
+    match contest_name[:3]:
+        case "ABC":
+            return Contest(contest_name, 4)
+        case "ARC":
+            return Contest(contest_name, 3)
+        case "AGC":
+            return Contest(contest_name, 1)
+        case "AHC":
+            return Contest(contest_name, 1)
+        case _:
+            raise TypeError("指定されたコンテストは存在しません")
 
 
 @dataclass
-class Contest(ABC):
-    contest_name: str
-    contest_type: str = field(init=False)
-    problems: tuple[str, ...] = ("A", "B", "C", "D", "E", "F", "G", "Ex")
-
-    def __post_init__(self):
-        self.contest_type = self.contest_name[:3]
+class FolderGenerator:
+    contest_infos: Contest
 
     def _generate_contest_type_folder(self, parent_dir: Path) -> Path:
         """コンテストの種類のフォルダを作成する(例: ABC, AEC)"""
 
-        (contest_dir := parent_dir / self.contest_type).mkdir(exist_ok=True)
+        (contest_dir := parent_dir / self.contest_infos.contest_type).mkdir(exist_ok=True)
         return contest_dir
 
     def _generate_contest_name_folder(self, parent_dir: Path) -> Path:
         """コンテストのフォルダを作成する(例: ABC001, ARC001)"""
 
-        (contest_id_dir := parent_dir / self.contest_name).mkdir()
+        (contest_id_dir := parent_dir / self.contest_infos.contest).mkdir()
         return contest_id_dir
 
-    def _generate_source_files(self, parent_dir: Path, problems: tuple[str, ...]) -> None:
-        """ソースコードファイルを作成する"""
-        for file_name in problems:
-            py_file.PythonFile().generate_file(parent_dir, file_name)
-            # rs_file.RustFile().generate_file(parent_dir, file_name)
-
-    def _generate_problem_folder(self, tgt_problems: tuple[str, ...]) -> None:
+    def generate_folder(self) -> Path:
+        """対象のコンテスト名(`ABC001`, `ARC001`など)のフォルダを作成する"""
 
         root_dir = Path(__file__).parents[2]
         contest_dir = self._generate_contest_type_folder(root_dir)
         problem_dir = self._generate_contest_name_folder(contest_dir)
-        self._generate_source_files(problem_dir, tgt_problems)
-        # json_file.Settings(problem_dir).setting_rust_analyzer()
-
-    @abstractmethod
-    def generate_folder(self) -> None:
-        """対象のコンテストで使用するフォルダを作成する"""
-        ...
+        return problem_dir
 
 
-class ABCContest(Contest):
-    def generate_folder(self) -> None:
-        self._generate_problem_folder(self.problems[:5])
+@dataclass
+class FileGenerator:
+    contest_info: Contest
+    parent_dir: Path
 
-
-class ARCContest(Contest):
-    def generate_folder(self) -> None:
-        self._generate_problem_folder(self.problems[:3])
-
-
-class AGCContest(Contest):
-    def generate_folder(self) -> None:
-        self._generate_problem_folder(self.problems[:1])
-
-
-class AHCContest(Contest):
-    def generate_folder(self) -> None:
-        self._generate_problem_folder(self.problems[:1])
+    def generate_source_files(self) -> None:
+        """ソースコードファイルを作成する"""
+        for file_name in self.contest_info.filenames:
+            py_file.PythonFile().generate_file(self.parent_dir, file_name)
+            # NOTE: Cargoを消してしまったので動作確認が出来なくなってしまった(悲しい)
+            # rs_file.RustFile().generate_file(self.parent_dir, file_name)
 
 
 def main():
     contest_name = input("Contest Name?: ").upper()
-    match contest_name[:3]:
-        case "ABC":
-            contest = ABCContest(contest_name)
-        case "ARC":
-            contest = ARCContest(contest_name)
-        case "AGC":
-            contest = AGCContest(contest_name)
-        case "AHC":
-            contest = AHCContest(contest_name)
-        case _:
-            TypeError("指定されたコンテストは存在しません")
-    contest.generate_folder()
+    contest_info = ContestFactory(contest_name)
+    folder = FolderGenerator(contest_info).generate_folder()
+    FileGenerator(contest_info, folder).generate_source_files()
+    # NOTE: Rustを動かすために必要だった記憶があるが忘れてしまった
+    # json_file.Settings(folder).setting_rust_analyzer()
 
 
 if __name__ == "__main__":
