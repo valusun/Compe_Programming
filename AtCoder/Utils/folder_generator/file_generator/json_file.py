@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 @dataclass
 class Settings:
-
     parent_dir: Path
 
     def _get_cargo_files(self) -> list[Path]:
@@ -17,6 +16,7 @@ class Settings:
 
         settings_file = Path("./.vscode/settings.json").resolve()
         settings_file.unlink(missing_ok=True)
+        settings_file.parent.mkdir(exist_ok=True)
         settings_file.touch()
         return settings_file
 
