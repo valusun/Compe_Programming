@@ -70,7 +70,6 @@ class FileGenerator:
         """ソースコードファイルを作成する"""
         for file_name in self.contest_info.filenames:
             py_file.PythonFile().generate_file(self.parent_dir, file_name)
-            # NOTE: Cargoを消してしまったので動作確認が出来なくなってしまった(悲しい)
             # rs_file.RustFile().generate_file(self.parent_dir, file_name)
 
 
@@ -79,7 +78,6 @@ def main():
     contest_info = ContestFactory(contest_name)
     folder = FolderGenerator(contest_info).generate_folder()
     FileGenerator(contest_info, folder).generate_source_files()
-    # NOTE: Rustを動かすために必要だった記憶があるが忘れてしまった
     # json_file.Settings(folder).setting_rust_analyzer()
 
 
