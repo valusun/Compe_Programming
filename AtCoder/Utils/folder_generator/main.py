@@ -41,7 +41,7 @@ class FolderGenerator:
     contest_infos: Contest
 
     def _generate_contest_type_folder(self, parent_dir: Path) -> Path:
-        """コンテストの種類のフォルダを作成する(例: ABC, AEC)"""
+        """コンテストの種類のフォルダを作成する(例: ABC, ARC)"""
 
         (contest_dir := parent_dir / self.contest_infos.contest_type).mkdir(exist_ok=True)
         return contest_dir
