@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Literal
 
-from file_generator import py_file  # , rs_file, json_file
+from file_generator import py_file, rs_file, json_file
 
 
 @dataclass(frozen=True)
@@ -66,19 +67,29 @@ class FileGenerator:
     contest_info: Contest
     parent_dir: Path
 
-    def generate_source_files(self) -> None:
+    def generate_source_files(self, lang: Literal["python", "rust"]) -> None:
         """ソースコードファイルを作成する"""
         for file_name in self.contest_info.filenames:
-            py_file.PythonFile().generate_file(self.parent_dir, file_name)
-            # rs_file.RustFile().generate_file(self.parent_dir, file_name)
+            if lang == "python":
+                py_file.PythonFile().generate_file(self.parent_dir, file_name)
+            elif lang == "rust":
+                rs_file.RustFile().generate_file(self.parent_dir, file_name)
+        if lang == "rust":
+            json_file.Settings(self.parent_dir).setting_rust_analyzer()
+
+
+def Validate(lang):
+    if lang not in ("python", "rust"):
+        raise ValueError("pythonかrustを入力してください")
 
 
 def main():
     contest_name = input("Contest Name?: ").upper()
+    lang = input("Language?(python / rust): ").lower()
+    Validate(lang)
     contest_info = ContestFactory(contest_name)
     folder = FolderGenerator(contest_info).generate_folder()
-    FileGenerator(contest_info, folder).generate_source_files()
-    # json_file.Settings(folder).setting_rust_analyzer()
+    FileGenerator(contest_info, folder).generate_source_files(lang)
 
 
 if __name__ == "__main__":
