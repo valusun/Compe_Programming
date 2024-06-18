@@ -2,27 +2,22 @@ def main():
     _ = int(input())
     S = list(input())
     Q = int(input())
-    last_number = "1"
-    no_tgt_indexes = set()
-    for _ in range(Q):
-        t, x, c = input().split()
-        x = int(x) - 1
-        if t == "1":
-            S[x] = c
-            no_tgt_indexes.add(x)
+    queries = [list(input().split()) for _ in range(Q)]
+    ri, f = "0", "0"
+    for i, q in enumerate(queries):
+        if q[0] in ["2", "3"]:
+            ri = i
+            f = q[0]
+    for i, q in enumerate(queries):
+        if q[0] == "1":
+            S[int(q[1]) - 1] = q[2]
         else:
-            no_tgt_indexes = set()
-            last_number = t
-    ans = ""
-    if last_number == "1":
-        ans = "".join(S)
-    elif last_number == "2":
-        for i, s in enumerate(S):
-            ans += s if i in no_tgt_indexes else s.lower()
-    else:
-        for i, s in enumerate(S):
-            ans += s if i in no_tgt_indexes else s.upper()
-    print(ans)
+            if i == ri:
+                if f == "2":
+                    S = [s.lower() for s in S]
+                if f == "3":
+                    S = [s.upper() for s in S]
+    print(*S, sep="")
 
 
 if __name__ == "__main__":
