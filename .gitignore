@@ -2,5 +2,5 @@
 target/
 *.pyc
 leetcode/node_modules
-leetcode/dist/tsconfig.tsbuildinfo
+leetcode/dist
 tmp/
