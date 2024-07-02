@@ -1,10 +1,4 @@
-const dfs = (
-  mx: number,
-  pattern: string,
-  l_cnt: number,
-  r_cnt: number,
-  result: string[],
-): string[] => {
+const dfs = (mx: number, pattern: string, l_cnt: number, r_cnt: number, result: string[]): string[] => {
   if (pattern.length == mx) {
     result.push(pattern);
     return result;
