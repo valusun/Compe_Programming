@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "format": "prettier ./src --write"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.6.2",
+    "prettier": "^3.3.2",
     "typescript": "^5.2.2"
   }
 }
