@@ -1,6 +1,6 @@
 .vscode/
 target/
 *.pyc
-leetcode/node_modules
-leetcode/dist
+LeetCode/node_modules/
+LeetCode/dist/
 tmp/
