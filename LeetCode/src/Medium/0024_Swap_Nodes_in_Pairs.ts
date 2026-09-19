@@ -7,13 +7,6 @@ export class ListNode {
   }
 }
 
-function makeAnswerListNode(current: ListNode, results: number[], idx: number): ListNode {
-  console.log(current, results, idx);
-  if (idx < 0) return current;
-  const val = results[idx];
-  return makeAnswerListNode(new ListNode(val, current), results, idx - 1);
-}
-
 /**
  * @param head 隣接リストの先頭
  * `[0]`と`[1]`, `[2]`と`[3]`のペアで要素を入れ替える
@@ -48,5 +41,32 @@ function swapPairs(head: ListNode | null): ListNode | null {
   return r;
 }
 
+/** 別解 */
+function swapPairs2(head: ListNode | null): ListNode | null {
+  if (head == null) return null;
+
+  // prev -> a -> b -> next を prev -> b -> a -> next にする
+  // dummyを使って先頭の入れ替えも可能としている
+  const dummy = new ListNode();
+  dummy.next = head;
+
+  let prev = dummy;
+  while (prev.next != null && prev.next.next != null) {
+    const a: ListNode = prev.next;
+    const b: ListNode = a.next as ListNode; // whileチェック済み
+    const next: ListNode | null = b.next;
+
+    // prev -> b -> a -> next
+    prev.next = b;
+    b.next = a;
+    a.next = next;
+    prev = a;
+  }
+  return dummy.next;
+}
+
 console.dir(swapPairs(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))))), { depth: null }); // [2, 1, 4, 3]
 console.dir(swapPairs(null)); // [] / null
+
+console.dir(swapPairs2(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))))), { depth: null }); // [2, 1, 4, 3]
+console.dir(swapPairs2(null)); // [] / null
